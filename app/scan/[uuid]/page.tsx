@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 
 type ScanPreviewResponse = {
@@ -23,6 +22,7 @@ export default function PinEntryPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(1);
 
   useEffect(() => {
     let cancelled = false;
@@ -66,21 +66,34 @@ export default function PinEntryPage() {
       const response = await fetch('/api/scan/access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uuid, pin }),
+        body: JSON.stringify({ qrUuid: uuid, pin }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 423) {
+          setError('Your account is locked due to too many failed PIN attempts. Contact support.');
+        } else {
+          setAttempt(prev => prev + 1);
+          setError(data.error || 'Authentication failed.');
+        }
         throw new Error(data.error || 'Authentication failed.');
       }
 
-      router.push('/professional/dashboard');
+      // Success: store data and redirect
+      sessionStorage.setItem('emergencyPatientData', JSON.stringify(data));
+      router.push('/professional/emergency-view');
     } catch (submitError: any) {
-      setError(submitError.message || 'Authentication failed.');
+      // Error already set
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handlePinChange = (value: string) => {
+    const numericValue = value.replace(/\D/g, '').slice(0, 6);
+    setPin(numericValue);
   };
 
   return (
@@ -97,21 +110,43 @@ export default function PinEntryPage() {
               Accessing medical passport of {patientFirstName}.
             </h1>
             <p className="mt-4 text-sm text-white/60">
-              Enter your professional PIN to continue.
+              Enter your 6-digit professional PIN to continue.
             </p>
 
             <form className="mt-10 space-y-6" onSubmit={handleSubmit}>
-              <Input
-                type="password"
+              {/* 6-dot PIN input */}
+              <div className="flex justify-center space-x-2">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <div
+                    key={i}
+                    className={`w-12 h-12 rounded-full border-2 flex items-center justify-center text-2xl font-bold ${
+                      i < pin.length
+                        ? 'bg-white text-black border-white'
+                        : 'border-white/30 text-transparent'
+                    }`}
+                  >
+                    {i < pin.length ? '●' : ''}
+                  </div>
+                ))}
+              </div>
+              <input
+                type="text"
                 inputMode="numeric"
-                maxLength={6}
                 value={pin}
-                onChange={(event) => setPin(event.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder="6-digit PIN"
-                className="bg-white text-[#1a1c1e]"
+                onChange={(e) => handlePinChange(e.target.value)}
+                className="sr-only" // Hidden input for accessibility
+                maxLength={6}
+                autoFocus
               />
 
-              {error ? <p className="text-sm text-red-300">{error}</p> : null}
+              {error && (
+                <p className="text-sm text-red-300 text-center">
+                  {error}
+                  {attempt > 1 && !error.includes('locked') && (
+                    <span className="block mt-1">Attempt {attempt} of 5</span>
+                  )}
+                </p>
+              )}
 
               <div className="flex gap-4">
                 <Button type="submit" className="flex-1" disabled={isSubmitting || pin.length !== 6}>
