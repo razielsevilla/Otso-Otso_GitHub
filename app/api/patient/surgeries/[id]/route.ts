@@ -8,10 +8,11 @@ import { HTTP } from '@/lib/api';
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
   try {
     const session = await requireRole(req, 'PATIENT');
+    const { id } = await params;
 
     const profile = await prisma.patientProfile.findUnique({
       where: { userId: session.user.id },
@@ -20,9 +21,8 @@ export async function DELETE(
 
     if (!profile) return HTTP.notFound('Patient profile');
 
-    const surgery = await prisma.surgery.findUnique({
-      where: { id: params.id },
-      select: { id: true, patientProfileId: true, procedure: true },
+    const surgery = await prisma.surgery.findFirst({
+      where: { id, patientProfileId: profile.id },
     });
 
     if (!surgery) return HTTP.notFound('Surgery record');
@@ -31,7 +31,7 @@ export async function DELETE(
       return HTTP.forbidden('You do not have permission to delete this surgery record.');
     }
 
-    await prisma.surgery.delete({ where: { id: params.id } });
+    await prisma.surgery.delete({ where: { id } });
 
     return Response.json({
       message: `Surgery record "${surgery.procedure}" removed successfully.`,

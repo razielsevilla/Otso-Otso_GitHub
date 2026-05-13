@@ -11,10 +11,11 @@ import { InteractionSeverity } from '@prisma/client';
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
   try {
     const session = await requireRole(req, 'PATIENT');
+    const { id } = await params;
 
     const profile = await prisma.patientProfile.findUnique({
       where: { userId: session.user.id },
@@ -23,9 +24,9 @@ export async function DELETE(
 
     if (!profile) return HTTP.notFound('Patient profile');
 
-    const medication = await prisma.medication.findUnique({
-      where: { id: params.id },
-      select: { id: true, patientProfileId: true, name: true },
+    // Ownership check
+    const medication = await prisma.medication.findFirst({
+      where: { id, patientProfileId: profile.id },
     });
 
     if (!medication) return HTTP.notFound('Medication');
@@ -34,7 +35,7 @@ export async function DELETE(
       return HTTP.forbidden('You do not have permission to delete this medication.');
     }
 
-    await prisma.medication.delete({ where: { id: params.id } });
+    await prisma.medication.delete({ where: { id } });
 
     // Re-run interaction check on remaining medications
     const remaining = await prisma.medication.findMany({
