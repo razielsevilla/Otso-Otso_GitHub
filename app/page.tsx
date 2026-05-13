@@ -426,9 +426,9 @@ export default function HomePage() {
                     </Link>
                   </li>
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
+                    <Link href="/terms" className="transition-colors hover:text-golden">
                       Terms of Service
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a href="#" className="transition-colors hover:text-golden">
@@ -521,9 +521,9 @@ export default function HomePage() {
               <Link href="/privacy" className="transition-colors hover:text-golden">
                 Privacy
               </Link>
-              <a href="#" className="transition-colors hover:text-golden">
+              <Link href="/terms" className="transition-colors hover:text-golden">
                 Terms
-              </a>
+              </Link>
               <a href="#" className="transition-colors hover:text-golden">
                 Cookies
               </a>

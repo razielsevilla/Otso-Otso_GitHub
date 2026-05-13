@@ -1,36 +1,37 @@
 "use client";
 
 /**
- * Privacy Policy — Lunas
- * Redesigned to match the Problem & Solution aesthetic.
+ * Terms of Service — Lunas
+ * Redesigned to match the Premium Aesthetic.
  */
 
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { 
   ArrowLeft, 
-  ShieldCheck, 
-  Lock, 
-  EyeOff,
+  UserCheck, 
+  Stethoscope, 
+  Key,
+  ShieldAlert,
   MapPin
 } from "lucide-react";
 
-export default function PrivacyPage() {
+export default function TermsPage() {
   const sections = [
     {
-      icon: EyeOff,
-      title: "Data Sovereignty",
-      description: "At Lunas, we believe that your medical information is yours alone. Our architecture is built to ensure that your data remains secure, private, and accessible only when you need it most.",
+      icon: UserCheck,
+      title: "User Accountability",
+      description: "You are responsible for ensuring all medical information provided is accurate and up-to-date. Lunas is a platform for information storage, not validation.",
     },
     {
-      icon: Lock,
-      title: "Bank-Grade Security",
-      description: "We employ industry-standard encryption and security protocols. Your medical information is encrypted at rest and in transit using the same standards as global financial institutions.",
+      icon: Stethoscope,
+      title: "Medical Disclaimer",
+      description: "Lunas is not a medical provider. Our service is a tool for information sharing in emergencies and does not substitute professional medical advice, diagnosis, or treatment.",
     },
     {
-      icon: ShieldCheck,
-      title: "Verified Access",
-      description: "Only individuals with your physical QR code or explicitly authorized medical professionals can view your profile. We never sell your medical data to third parties.",
+      icon: Key,
+      title: "Secure Access",
+      description: "You are responsible for maintaining the confidentiality of your account and for all activities that occur under your unique medical QR code.",
     },
   ];
 
@@ -67,12 +68,12 @@ export default function PrivacyPage() {
           <div className="space-y-8">
             <div>
               <h1 className="font-display text-5xl font-bold leading-[1.1] tracking-tighter text-night md:text-6xl lg:text-7xl">
-                Privacy is <br />
-                <span className="text-golden italic">foundational.</span>
+                Terms of <br />
+                <span className="text-golden italic">Engagement.</span>
               </h1>
               <p className="mt-8 max-w-md text-lg leading-relaxed text-muted-foreground/80">
-                Every design decision we make starts with your data sovereignty. 
-                We've built Lunas to be as secure as it is life-saving.
+                Lunas is designed to be a reliable bridge between you and first responders. 
+                These terms ensure the platform remains safe and effective for everyone.
               </p>
             </div>
 
@@ -96,11 +97,11 @@ export default function PrivacyPage() {
             </div>
           </div>
 
-          {/* Right Column - Detailed Policy */}
+          {/* Right Column - Detailed Terms */}
           <div className="rounded-[2.5rem] border border-night/[0.03] bg-white/60 p-8 shadow-soft-2xl backdrop-blur-md md:p-12 lg:p-16">
             <div className="max-w-none space-y-12 text-muted-foreground/90">
               <div className="space-y-2 border-b border-night/5 pb-8">
-                <h2 className="font-display text-3xl font-bold text-night">Full Disclosure</h2>
+                <h2 className="font-display text-3xl font-bold text-night">General Terms</h2>
                 <p className="text-sm font-medium uppercase tracking-widest text-golden/60">Last Updated: May 14, 2026</p>
               </div>
 
@@ -109,9 +110,9 @@ export default function PrivacyPage() {
                   <div className="h-px flex-1 bg-night/5" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-night/20">01</span>
                 </div>
-                <h3 className="text-xl font-bold text-night">Information We Collect</h3>
+                <h3 className="text-xl font-bold text-night">Acceptance of Terms</h3>
                 <p className="leading-relaxed text-sm lg:text-base">
-                  To provide our medical passport service, we collect identity information (Name, Age, Gender), medical details (Blood type, Allergies, Conditions, Medications), and emergency contact information.
+                  By accessing or using Lunas, you agree to be bound by these Terms of Service. If you do not agree to all of these terms, do not use the platform.
                 </p>
               </section>
 
@@ -120,12 +121,12 @@ export default function PrivacyPage() {
                   <div className="h-px flex-1 bg-night/5" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-night/20">02</span>
                 </div>
-                <h3 className="text-xl font-bold text-night">How We Use Your Data</h3>
+                <h3 className="text-xl font-bold text-night">Proper Use</h3>
                 <p className="leading-relaxed text-sm lg:text-base">
-                  Your data is used exclusively to generate your unique medical QR code and display your profile to verified responders in an emergency.
+                  The Lunas medical passport is intended for emergency use. Misuse of the platform, including providing false medical information or attempting to bypass security measures, may result in account termination.
                 </p>
                 <div className="rounded-xl border border-golden/20 bg-golden/[0.03] p-4 text-sm italic text-golden/80">
-                  "We never sell your medical data to third parties, advertising networks, or data brokers."
+                  "Lunas reserves the right to suspend any account that provides misleading or fraudulent medical data."
                 </div>
               </section>
 
@@ -134,9 +135,9 @@ export default function PrivacyPage() {
                   <div className="h-px flex-1 bg-night/5" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-night/20">03</span>
                 </div>
-                <h3 className="text-xl font-bold text-night">Your Rights</h3>
+                <h3 className="text-xl font-bold text-night">Limitation of Liability</h3>
                 <p className="leading-relaxed text-sm lg:text-base">
-                  You maintain full control. Access and update your information at any time, delete your account and all associated data, or revoke access by disabling your QR code instantly.
+                  Lunas provides a platform for information display. We are not responsible for the actions of medical professionals or first responders who use (or fail to use) the information displayed.
                 </p>
               </section>
 
@@ -145,13 +146,9 @@ export default function PrivacyPage() {
                   <div className="h-px flex-1 bg-night/5" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-night/20">04</span>
                 </div>
-                <h3 className="text-xl font-bold text-night">Contact</h3>
+                <h3 className="text-xl font-bold text-night">Modifications</h3>
                 <p className="leading-relaxed text-sm lg:text-base">
-                  Questions regarding our privacy framework? Contact our Data Protection Officer at:
-                  <br />
-                  <a href="mailto:privacy@lunas.health" className="mt-2 inline-block font-semibold text-golden hover:underline decoration-golden/30 underline-offset-4">
-                    privacy@lunas.health
-                  </a>
+                  We may update these terms from time to time. Your continued use of Lunas after changes are posted constitutes your acceptance of the new terms.
                 </p>
               </section>
 
