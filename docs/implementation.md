@@ -159,18 +159,18 @@ Hour 4–5:
 **Track: Professional registration + dashboard skeleton**
 
 Hour 1–2:
-- [ ] `components/layout/ProfessionalLayout.tsx` — sidebar (Dashboard, Scan Patient QR, Recent Patients, My Profile, Logout)
-- [ ] `app/(auth)/register/professional/page.tsx` — professional registration form (includes PRC number, specialization, hospital fields)
+- [x] `components/layout/ProfessionalLayout.tsx` — sidebar (Dashboard, Scan Patient QR, Recent Patients, My Profile, Logout)
+- [x] `app/(auth)/register/professional/page.tsx` — professional registration form (includes PRC number, specialization, hospital fields)
 
 Hour 2–4:
-- [ ] `app/(professional)/dashboard/page.tsx` — skeleton: scans today, patients this week, pending notes, PRC status, recent patient list
-- [ ] `app/(professional)/scan/page.tsx` — QR scanner UI (use `react-qr-reader` or camera access + `jsQR`)
-- [ ] `app/scan/[uuid]/page.tsx` — public PIN entry page (no auth required, shows patient first name, PIN input, authenticate button)
+- [x] `app/(professional)/dashboard/page.tsx` — skeleton: scans today, patients this week, pending notes, PRC status, recent patient list
+- [x] `app/(professional)/scan/page.tsx` — QR scanner UI (use `react-qr-reader` or camera access + `jsQR`)
+- [x] `app/scan/[uuid]/page.tsx` — public PIN entry page (no auth required, shows patient first name, PIN input, authenticate button)
 
 Hour 4–5:
-- [ ] Wire professional registration to API
-- [ ] Wire login → redirect to `/professional/dashboard`
-- [ ] PIN entry page should call `POST /api/scan/access` (wire up in Phase 2)
+- [x] Wire professional registration to API
+- [x] Wire login → redirect to `/professional/dashboard`
+- [x] PIN entry page should call `POST /api/scan/access` (wire up in Phase 2)
 
 ---
 
