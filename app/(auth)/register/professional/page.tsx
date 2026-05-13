@@ -30,7 +30,7 @@ export default function ProfessionalRegistrationPage() {
     firstName: '',
     lastName: '',
     email: '',
-    mobile: '+63',
+    mobile: '',
     prcNumber: '',
     profession: '',
     specialization: '',
@@ -39,27 +39,47 @@ export default function ProfessionalRegistrationPage() {
     confirmPassword: '',
   });
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+  const forbiddenChars = /[\\\'\";\s]/;
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
+    
+    if (name === "mobile") {
+      const numbersOnly = value.replace(/\D/g, "");
+      if (numbersOnly.length <= 10) {
+        setFormData((current) => ({ ...current, mobile: numbersOnly }));
+      }
+      return;
+    }
+
     setFormData((current) => ({ ...current, [name]: value }));
     if (error) setError(null);
   };
 
-  const isStepOneComplete =
-    formData.firstName.trim() &&
-    formData.lastName.trim() &&
-    formData.email.trim() &&
-    formData.mobile.trim();
+  const formatMobileDisplay = (val: string) => {
+    const m = val.match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+    if (!m) return "";
+    return `${m[1]}${m[2] ? " " + m[2] : ""}${m[3] ? " " + m[3] : ""}`.trim();
+  };
 
-  const isStepTwoComplete = formData.prcNumber.trim() && formData.profession.trim();
+  const isStepOneComplete =
+    formData.firstName.trim() !== '' &&
+    formData.lastName.trim() !== '' &&
+    emailRegex.test(formData.email) &&
+    formData.mobile.length === 10;
+
+  const isStepTwoComplete = formData.prcNumber.trim() !== '' && formData.profession.trim() !== '';
 
   const isStepThreeComplete =
-    formData.password.length >= 8 &&
+    passwordRegex.test(formData.password) &&
+    !forbiddenChars.test(formData.password) &&
     formData.password === formData.confirmPassword;
 
   const handleSubmit = async () => {
     if (!isStepThreeComplete) {
-      setError('Passwords must match and be at least 8 characters long.');
+      setError('Please check your password requirements.');
       return;
     }
 
@@ -74,7 +94,7 @@ export default function ProfessionalRegistrationPage() {
           firstName: formData.firstName,
           lastName: formData.lastName,
           email: formData.email,
-          mobile: formData.mobile,
+          mobile: `+63${formData.mobile}`,
           password: formData.password,
           prcNumber: formData.prcNumber,
           profession: formData.profession,
@@ -155,7 +175,17 @@ export default function ProfessionalRegistrationPage() {
                   <Input name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last name" />
                 </div>
                 <Input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="dr.name@hospital.ph" />
-                <Input name="mobile" value={formData.mobile} onChange={handleChange} placeholder="+63 917 555 0142" />
+                <div className="flex w-full items-center overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-colors focus-within:border-[#c8c0b2] focus-within:ring-2 focus-within:ring-[#1a1c1e]/5 h-11">
+                  <div className="bg-[#f9f9f9] px-4 py-2 text-sm font-bold border-r border-neutral-200 h-full flex items-center">+63</div>
+                  <input
+                    name="mobile"
+                    value={formatMobileDisplay(formData.mobile)}
+                    onChange={handleChange}
+                    type="tel"
+                    placeholder="917 555 0142"
+                    className="w-full px-4 py-2 text-sm outline-none bg-transparent h-full"
+                  />
+                </div>
                 <Button type="button" className="w-full" disabled={!isStepOneComplete} onClick={() => setStep(2)}>
                   Continue <ArrowRight className="h-4 w-4" />
                 </Button>
@@ -213,6 +243,20 @@ export default function ProfessionalRegistrationPage() {
                   onChange={handleChange}
                   placeholder="Confirm password"
                 />
+                <div className="rounded-xl bg-neutral-50 p-4 border border-neutral-100 grid grid-cols-2 gap-2">
+                   <div className={`text-[10px] flex items-center gap-1 ${formData.password.length >= 8 ? "text-green-600" : "text-[#8d8374]"}`}>
+                      <Check className="h-3 w-3" /> 8+ Chars
+                   </div>
+                   <div className={`text-[10px] flex items-center gap-1 ${passwordRegex.test(formData.password) ? "text-green-600" : "text-[#8d8374]"}`}>
+                      <Check className="h-3 w-3" /> Alpha & Number
+                   </div>
+                   <div className={`text-[10px] flex items-center gap-1 ${!forbiddenChars.test(formData.password) && formData.password.length > 0 ? "text-green-600" : "text-[#8d8374]"}`}>
+                      <Check className="h-3 w-3" /> No Quotes/Spaces
+                   </div>
+                   <div className={`text-[10px] flex items-center gap-1 ${formData.password === formData.confirmPassword && formData.confirmPassword.length > 0 ? "text-green-600" : "text-[#8d8374]"}`}>
+                      <Check className="h-3 w-3" /> Match
+                   </div>
+                </div>
                 <div className="flex gap-4">
                   <Button type="button" variant="outline" className="flex-1" onClick={() => setStep(2)}>
                     Previous

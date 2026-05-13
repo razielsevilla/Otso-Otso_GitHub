@@ -38,8 +38,8 @@ export default function PatientRegistration() {
     sex: ""
   });
 
-  // Updated Password Security: Allows underscores and hyphens
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-])[A-Za-z\d@$!%*?&_\-]{8,}$/;
+  // Updated Password Security: Letter and number required, special characters optional
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
   const forbiddenChars = /[\\'\";\s]/;
 
   const today = useMemo(() => {
@@ -227,7 +227,7 @@ export default function PatientRegistration() {
                   <label className="text-[10px] font-bold uppercase text-[#8d8374]">Password</label>
                   <div className="relative">
                     <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-                    <input name="password" value={formData.password} onChange={handleChange} type={showPassword ? "text" : "password"} className="w-full rounded-2xl border border-neutral-200 px-12 py-4 text-sm outline-none" />
+                    <input name="password" value={formData.password} onChange={handleChange} type={showPassword ? "text" : "password"} className="w-full rounded-2xl border border-neutral-200 px-12 py-4 text-sm outline-none [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden" />
                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-5 top-1/2 -translate-y-1/2 text-neutral-400">
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -238,7 +238,7 @@ export default function PatientRegistration() {
                   <label className="text-[10px] font-bold uppercase text-[#8d8374]">Confirm Password</label>
                   <div className="relative">
                     <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
-                    <input name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} type={showConfirmPassword ? "text" : "password"} className="w-full rounded-2xl border border-neutral-200 px-12 py-4 text-sm outline-none" />
+                    <input name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} type={showConfirmPassword ? "text" : "password"} className="w-full rounded-2xl border border-neutral-200 px-12 py-4 text-sm outline-none [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden" />
                     <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-5 top-1/2 -translate-y-1/2 text-neutral-400">
                       {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -250,7 +250,7 @@ export default function PatientRegistration() {
                       <Check className="h-3 w-3" /> 8+ Chars
                    </div>
                    <div className={cn("text-[10px] flex items-center gap-1", passwordRegex.test(formData.password) ? "text-green-600" : "text-[#8d8374]")}>
-                      <Check className="h-3 w-3" /> Alpha/Num/Special
+                      <Check className="h-3 w-3" /> Alpha & Number
                    </div>
                    <div className={cn("text-[10px] flex items-center gap-1", !forbiddenChars.test(formData.password) && formData.password.length > 0 ? "text-green-600" : "text-[#8d8374]")}>
                       <Check className="h-3 w-3" /> No Quotes/Spaces

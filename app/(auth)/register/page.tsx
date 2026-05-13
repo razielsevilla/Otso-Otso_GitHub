@@ -33,19 +33,13 @@ export default function RegisterPage() {
 
         {/* Right Section: Role Selection */}
         <div className="w-1/2 p-12 flex flex-col">
-          <div className="flex justify-between items-center mb-16">
+          <div className="flex justify-start items-center mb-16">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-orange-200 rounded-full flex items-center justify-center overflow-hidden">
                  <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-100 rounded-full transform translate-x-1" />
               </div>
               <span className="text-2xl font-serif font-bold text-[#001F2D]">Lunas</span>
             </div>
-            <Link 
-              href="/login" 
-              className="text-sm font-medium text-slate-600 hover:text-black transition-colors"
-            >
-              Sign in
-            </Link>
           </div>
 
           <div className="flex-grow flex flex-col justify-center">

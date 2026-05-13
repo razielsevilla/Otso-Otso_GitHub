@@ -122,7 +122,7 @@ export default function LoginPage() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full rounded-2xl border border-neutral-200 bg-white px-12 py-4 text-sm outline-none focus:ring-2 focus:ring-[#1a1c1e]/5 transition-all" 
+                  className="w-full rounded-2xl border border-neutral-200 bg-white px-12 py-4 text-sm outline-none focus:ring-2 focus:ring-[#1a1c1e]/5 transition-all [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden" 
                 />
                 <button 
                   type="button"
@@ -153,8 +153,8 @@ export default function LoginPage() {
               )}
             </button>
             
-            <p className="text-center text-xs font-medium text-[#8d8374]">
-              New here? <Link href="/register/patient" className="font-bold text-[#1a1c1e]">Create an account</Link> · <Link href="#" className="text-neutral-400 hover:text-[#1a1c1e]">Admin sign in</Link>
+            <p className="text-center text-sm font-medium text-[#8d8374]">
+              New here? <Link href="/register" className="font-bold text-[#1a1c1e]">Create an account</Link>
             </p>
           </form>
         </div>
