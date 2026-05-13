@@ -44,10 +44,10 @@ feature/landing-page      → Member G
 |---|---|---|
 | **Phase 0** | 0:00–1:00 | Setup & scaffolding — everyone unblocked |
 | **Phase 1** | 1:00–5:00 | Foundation — DB, Auth, shared lib, core components |
-| **Phase 2** | 5:00–13:00 | Core feature development (parallel tracks) |
-| **Phase 3** | 13:00–19:00 | Integration, drug interaction, notifications |
-| **Phase 4** | 19:00–22:00 | QA, bug fixing, polish |
-| **Phase 5** | 22:00–24:00 | Demo prep, seed data, final deploy |
+| **Phase 2** | 5:00–12:00 | Core feature development (parallel tracks) |
+| **Phase 3** | 12:00–17:00 | Integration, drug interaction, notifications |
+| **Phase 4** | 17:00–20:00 | QA, bug fixing, polish |
+| **Phase 5** | 20:00–22:00 | Demo prep, seed data, final deploy |
 
 ---
 
@@ -74,7 +74,6 @@ feature/landing-page      → Member G
 - [ ] Run `npm run dev` — confirm app loads
 - [ ] Check out your assigned feature branch
 
-### Member G
 ### Member G
 - [ ] Create the project landing page: design, copy, and implementation
 - [ ] Scaffold `app/landing` (or `pages/index.tsx`) with a responsive Tailwind layout
