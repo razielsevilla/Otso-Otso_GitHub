@@ -1,7 +1,3 @@
-"use client";
-
-import { AdminLayout } from "@/components/layout/AdminLayout";
-
 const verifications = [
   { name: 'Dr. Andrea Lim', title: 'Cardiologist', prcId: '#0091223' },
   { name: 'Nurse Karl Vergara', title: 'Registered Nurse', prcId: '#0144812' },
@@ -10,36 +6,46 @@ const verifications = [
 
 export default function VerificationsPage() {
   return (
-    <AdminLayout activePath="/expert-verifications">
-      <section className="min-h-full bg-[#FDF9F3] p-12">
-        <header className="mb-8 space-y-2">
-          <h1 className="font-serif text-5xl font-semibold tracking-tight text-[#0D152B]">Expert verifications</h1>
-          <p className="text-2xl text-[#2f3f5a]">Review PRC license submissions.</p>
+    <div className="space-y-8 px-12">
+      <div className="mx-auto w-full max-w-6xl">
+        {/* Page Header */}
+        <header className="mb-12">
+          <h1 className="font-serif text-[2.75rem] font-bold tracking-tight text-[#0D152B]">
+            Expert verifications
+          </h1>
+          <p className="mt-2 font-sans text-lg text-[#64748b]">
+            Review PRC license submissions.
+          </p>
         </header>
 
-        <div className="space-y-4">
+        {/* Verification Request Cards Stack */}
+        <div className="space-y-6">
           {verifications.map((item) => (
             <article
               key={item.prcId}
-              className="flex flex-col gap-5 rounded-[24px] border border-neutral-200 bg-[#FDF9F3] px-7 py-6 md:flex-row md:items-center md:justify-between"
+              className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white px-8 py-6 transition-shadow hover:shadow-sm"
             >
-              <div>
-                <h2 className="font-serif text-[2rem] font-semibold leading-none text-[#0D152B]">{item.name}</h2>
-                <p className="mt-2 text-lg text-[#35507a]">
+              {/* Professional Info */}
+              <div className="space-y-1">
+                <h2 className="font-sans text-[1.25rem] font-bold text-[#0D152B]">
+                  {item.name}
+                </h2>
+                <p className="font-sans text-sm text-[#94a3b8]">
                   {item.title} · PRC {item.prcId}
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              {/* Action Buttons */}
+              <div className="flex items-center gap-4">
                 <button
                   type="button"
-                  className="rounded-full border border-neutral-300 bg-[#FDF9F3] px-6 py-2 text-base font-medium text-[#0D152B] transition hover:bg-white"
+                  className="rounded-full border border-neutral-200 bg-white px-6 py-2 text-sm font-medium text-[#0D152B] transition-colors hover:bg-neutral-50"
                 >
                   Reject
                 </button>
                 <button
                   type="button"
-                  className="rounded-full bg-[#0D152B] px-6 py-2 text-base font-semibold text-white transition hover:bg-[#162448]"
+                  className="rounded-full bg-[#0D152B] px-6 py-2 text-sm font-bold text-white transition-opacity hover:opacity-90"
                 >
                   Approve
                 </button>
@@ -47,7 +53,7 @@ export default function VerificationsPage() {
             </article>
           ))}
         </div>
-      </section>
-    </AdminLayout>
+      </div>
+    </div>
   );
 }

@@ -24,7 +24,7 @@ type NavItem = {
 const navigation: NavItem[] = [
   { label: 'Overview', href: '/overview', icon: LayoutGrid },
   { label: 'Users', href: '/users', icon: User },
-  { label: 'Expert Verifications', href: '/expert-verifications', icon: ShieldAlert },
+  { label: 'Expert Verifications', href: '/verifications', icon: ShieldAlert },
   { label: 'Audit Logs', href: '/audit-logs', icon: FileText },
   { label: 'System Health', href: '/system-health', icon: Cpu },
 ];

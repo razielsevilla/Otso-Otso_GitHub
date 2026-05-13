@@ -24,7 +24,7 @@ const recentEvents = [
 
 export default function OverviewPage() {
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 px-12">
       <div className="mx-auto w-full max-w-6xl">
         {/* Page Header */}
         <header className="text-left">

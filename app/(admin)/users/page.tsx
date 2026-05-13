@@ -64,8 +64,8 @@ const columns: TableColumn<UserRow>[] = [
 
 export default function UsersPage() {
   return (
-    <div className="mx-auto w-full max-w-6xl px-12 py-12">
-      <div className="space-y-8">
+    <div className="space-y-8 px-12">
+      <div className="mx-auto w-full max-w-6xl">
         {/* Page Header */}
         <header className="text-left">
           <h1 className="font-serif text-[2.75rem] font-bold tracking-tight text-[#0D152B]">
