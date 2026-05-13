@@ -11,7 +11,8 @@ import {
   ArrowLeft, 
   ShieldCheck, 
   Lock, 
-  EyeOff
+  EyeOff,
+  MapPin
 } from "lucide-react";
 
 export default function PrivacyPage() {
@@ -59,7 +60,7 @@ export default function PrivacyPage() {
       </header>
 
       {/* MAIN HERO SECTION (Split Aesthetic) */}
-      <main className="relative z-10 mx-auto max-w-6xl px-6 pb-24 pt-12">
+      <main className="relative z-10 mx-auto max-w-6xl px-6 pb-48 pt-12">
         <div className="grid gap-16 lg:grid-cols-[1fr_1.2fr]">
           
           {/* Left Column - High Impact Title */}
@@ -160,12 +161,180 @@ export default function PrivacyPage() {
         </div>
       </main>
 
-      {/* FOOTER */}
-      <footer className="relative z-10 mx-auto max-w-6xl px-6 py-12 text-center">
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-night/5 to-transparent mb-8" />
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground/30">
-          © {new Date().getFullYear()} Lunas · Team Otso-Otso · A SIKAPTala Ideathon project
-        </p>
+      <footer className="relative bg-ivory text-muted-foreground overflow-hidden">
+        {/* Decorative glow orbs */}
+        <div className="pointer-events-none absolute -top-40 left-1/4 h-80 w-80 rounded-full bg-golden/[0.04] blur-[100px]" />
+        <div className="pointer-events-none absolute -bottom-20 right-1/4 h-60 w-60 rounded-full bg-amber-glow/[0.04] blur-[80px]" />
+
+        {/* Thin golden divider */}
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="h-px bg-gradient-to-r from-transparent via-golden/20 to-transparent" />
+        </div>
+
+        {/* ── Main footer grid ── */}
+        <div className="mx-auto max-w-6xl px-6 pt-16 pb-12">
+          <div className="grid gap-8 md:grid-cols-[0.7fr_1.3fr]">
+            {/* Brand column */}
+            <div className="space-y-5">
+              <Logo variant="light" />
+              <p className="max-w-xs text-sm leading-relaxed text-muted-foreground/70">
+                A secure medical passport that gives first responders the right
+                information at the right moment — through a single QR code.
+              </p>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground/50">
+                <MapPin className="h-3.5 w-3.5" strokeWidth={1.5} />
+                Philippines
+              </div>
+            </div>
+
+            {/* Nav columns */}
+            <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+              {/* Product */}
+              <div>
+                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">
+                  Product
+                </h4>
+                <ul className="space-y-3 text-sm">
+                  <li>
+                    <a href="/#features" className="transition-colors hover:text-golden">
+                      Features
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/#why" className="transition-colors hover:text-golden">
+                      Why Lunas
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/#how" className="transition-colors hover:text-golden">
+                      How it works
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/#trust" className="transition-colors hover:text-golden">
+                      Security
+                    </a>
+                  </li>
+                  <li>
+                    <Link href="/scan/demo-mp-2026-00428" className="transition-colors hover:text-golden">
+                      Demo scan
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Resources */}
+              <div>
+                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">
+                  Resources
+                </h4>
+                <ul className="space-y-3 text-sm">
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Documentation
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      API Reference
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Help Center
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Status
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Legal */}
+              <div>
+                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">
+                  Legal
+                </h4>
+                <ul className="space-y-3 text-sm">
+                  <li>
+                    <Link href="/privacy" className="transition-colors hover:text-golden">
+                      Privacy Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Terms of Service
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Data Processing
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Cookie Policy
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Connect */}
+              <div>
+                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">
+                  Connect
+                </h4>
+                <ul className="space-y-3 text-sm">
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Contact Us
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Partnerships
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Careers
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Press Kit
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        {/* ── Bottom bar ── */}
+        <div className="border-t border-border/50">
+          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row">
+            <div className="text-xs text-muted-foreground/50">
+              © {new Date().getFullYear()} Lunas · Team Otso-Otso · A SIKAPTala
+              Ideathon project
+            </div>
+            <div className="flex items-center gap-6 text-xs text-muted-foreground/50">
+              <Link href="/privacy" className="transition-colors hover:text-golden">
+                Privacy
+              </Link>
+              <a href="#" className="transition-colors hover:text-golden">
+                Terms
+              </a>
+              <a href="#" className="transition-colors hover:text-golden">
+                Cookies
+              </a>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );
