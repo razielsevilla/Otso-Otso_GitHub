@@ -31,6 +31,7 @@ feature/patient-ui        → Dev C
 feature/professional-ui   → Dev D
 feature/admin-ui          → Dev E
 feature/shared-components → Dev E (early) then everyone uses
+feature/landing-page      → Member G
 ```
 
 **Rule:** No one pushes directly to `develop`. Open a PR; Team Lead reviews and merges. Keep PRs small.
