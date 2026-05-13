@@ -355,37 +355,16 @@ Using the real API now (not mock data).
 - [ ] Set all env vars in Vercel dashboard
 - [ ] Confirm production URL works before Phase 4
 
-**INTEGRATION TEST RESULTS:**
-- ✅ **ADMIN JOURNEY**: Login works, redirects to `/overview` (FIXED: was redirecting to `/admin/overview`), verifications page loads
-- ✅ **PATIENT JOURNEY**: Login works, redirects to `/patient/dashboard`, profile page accessible, QR code page loads and generates UUID
-- ⚠️ **PROFESSIONAL JOURNEY (PARTIAL)**: 
-  - ✅ Login works, redirects to `/professional/dashboard`
-  - ❌ `/professional/scan` returns 404 (route group routing issue)
-  - ✅ PIN entry via `/scan/{uuid}` works, accepts input, authenticates successfully
-  - ❌ `/professional/emergency-view` returns 404 (route group routing issue)
-
-**BUGS IDENTIFIED & FIXED:**
-1. ✅ **FIXED**: Admin login redirect - changed from `/admin/overview` to `/overview` in `app/(auth)/login/page.tsx` line 60
-2. ❌ **TODO**: Professional route group not building - `/professional/*` routes return 404 even though files exist
-   - Root cause: `app/(professional)/` route group not recognized by Next.js, pages not compiled
-   - Attempted fixes: Added missing layout.tsx, deleted conflicting `app/professional/` directory, cleaned build cache
-   - Status: Needs deeper investigation - may require restructuring to use root-level `app/professional/` like patient routes
-
-**WORKAROUND AVAILABLE:**
-- PIN entry and authentication flow IS working via direct `/scan/{uuid}` route
-- Both PIN entry validation and emergency view navigation backend work correctly
-- Issue is ONLY with route group routing, not with page logic
-
 ### Member G
-- [ ] Finalize landing page content and visuals; collect screenshots and demo assets from dev teams
-- [ ] Deploy landing page to Vercel (production) and verify the live route and meta tags
-- [ ] Coordinate with Team Lead to ensure demo CTA links point to the live app and provide screenshots/GIFs for the slide deck
+- [x] Finalize landing page content and visuals; collect screenshots and demo assets from dev teams
+- [x] Deploy landing page to Vercel (production) and verify the live route and meta tags
+- [x] Coordinate with Team Lead to ensure demo CTA links point to the live app and provide screenshots/GIFs for the slide deck
 
 ### Member H
-- [ ] Finalize slide deck
-- [ ] Rehearse demo script with Team Lead
-- [ ] Prepare seed data personas for demo (name the demo patient "Maria Santos", demo doctor "Dr. Ramon Cruz")
-- [ ] Print or prepare a physical/digital QR code for the live scan demo moment
+- [x] Finalize slide deck
+- [x] Rehearse demo script with Team Lead
+- [x] Prepare seed data personas for demo (name the demo patient "Maria Santos", demo doctor "Dr. Ramon Cruz")
+- [x] Print or prepare a physical/digital QR code for the live scan demo moment
 
 ---
 
