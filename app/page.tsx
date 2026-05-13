@@ -14,6 +14,12 @@ import {
   Mail,
   ArrowRight,
   MapPin,
+  Activity,
+  AlertCircle,
+  ShieldAlert,
+  Pill as PillIcon,
+  Heart,
+  User,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -26,27 +32,42 @@ export const metadata: Metadata = {
 /*  Pill Component                                */
 /* ────────────────────────────────────────────── */
 
-function Pill({
+function MedicalTile({
+  icon: Icon,
   label,
   value,
   tone,
 }: {
+  icon: any;
   label: string;
   value: string;
   tone: "ok" | "warn" | "danger";
 }) {
-  const toneCls =
+  const toneColor =
     tone === "danger"
-      ? "border-[#8B3A3A]/25 bg-[#8B3A3A]/8"
+      ? "text-destructive"
       : tone === "warn"
-        ? "border-amber-glow/20 bg-amber-glow/8"
-        : "border-sage/20 bg-sage/8";
+        ? "text-amber-warm"
+        : "text-sage";
+
+  const toneBg =
+    tone === "danger"
+      ? "bg-destructive/10 border-destructive/20"
+      : tone === "warn"
+        ? "bg-amber-warm/10 border-amber-warm/20"
+        : "bg-sage/10 border-sage/20";
+
   return (
-    <div className={`rounded-xl border px-3 py-2 ${toneCls}`}>
-      <div className="text-[10px] uppercase tracking-wider text-moonlight/50">
-        {label}
+    <div className={`flex items-start gap-4 rounded-2xl border p-4 transition-all duration-300 hover:bg-white/5 hover:translate-y-[-2px] ${toneBg}`}>
+      <div className={`mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-night/40 backdrop-blur-sm border border-white/5`}>
+        <Icon className={`h-4 w-4 ${toneColor}`} />
       </div>
-      <div className="text-sm font-medium text-moonlight/90">{value}</div>
+      <div>
+        <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-moonlight/30">
+          {label}
+        </div>
+        <div className="mt-0.5 text-sm font-semibold text-moonlight/90">{value}</div>
+      </div>
     </div>
   );
 }
@@ -59,7 +80,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-ivory font-sans">
       {/* ═══════════════ HEADER ═══════════════ */}
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Logo variant="light" />
         <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
           <a
@@ -98,7 +119,7 @@ export default function HomePage() {
       </header>
 
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="mx-auto max-w-6xl px-6 pb-28 pt-16 md:pt-28">
+      <section className="mx-auto max-w-6xl px-6 pb-28 pt-4">
         <div className="grid items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
           {/* Left — Copy */}
           <div>
@@ -132,51 +153,128 @@ export default function HomePage() {
           </div>
 
           {/* Right — Hero Card with Anti-Gravity effect */}
-          <div className="relative">
-            {/* Gradient blur behind card (3D Anti-Gravity glow) */}
-            <div className="absolute -inset-10 rounded-[3rem] bg-gradient-to-br from-amber-glow/25 via-transparent to-golden/15 blur-3xl" />
-            <div className="absolute -inset-6 rounded-[3rem] bg-gradient-to-tr from-night/10 via-transparent to-amber-glow/10 blur-2xl" />
+          <div className="group relative">
+            {/* 3D Halo Glow Background */}
+            <div className="absolute -inset-10 animate-pulse rounded-[3rem] bg-gradient-to-br from-golden/20 via-transparent to-amber-glow/10 blur-[80px]" />
+            <div className="absolute -inset-4 rounded-[3rem] bg-gradient-to-tr from-night/40 via-transparent to-white/5 blur-2xl" />
 
-            {/* Emergency View Card — Glassmorphism */}
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-night p-8 text-moonlight shadow-[0_0_20px_rgba(255,255,255,0.05)] transition-all duration-700 hover:scale-[1.02] hover:shadow-glow/20">
-              {/* Subtle inner glass highlights */}
-              <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-golden/5 blur-3xl" />
-              <div className="pointer-events-none absolute -bottom-16 -left-16 h-32 w-32 rounded-full bg-amber-glow/5 blur-2xl" />
+            {/* Main Passport Card */}
+            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-night/90 p-8 text-moonlight shadow-2xl backdrop-blur-2xl transition-all duration-500 group-hover:scale-[1.01] group-hover:border-white/20">
 
-              <div className="relative">
-                <div className="flex items-center justify-between text-xs text-moonlight/50">
-                  <span className="font-sans font-medium uppercase tracking-widest">
-                    Emergency View
+              {/* Animated Glass Reflection Beam */}
+              <div className="pointer-events-none absolute -left-[100%] top-0 h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/5 to-transparent transition-all duration-1000 group-hover:left-[200%]" />
+
+              {/* Top Glass Bar */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-glow opacity-75"></span>
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-glow"></span>
                   </span>
-                  <span className="rounded-full bg-amber-glow/15 px-2.5 py-0.5 font-medium text-amber-glow">
-                    Verified
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-moonlight/40">
+                    Live Emergency View
                   </span>
                 </div>
-
-                <div className="mt-5 font-display text-3xl font-semibold tracking-tight">
-                  Maria Santos, 34
+                <div className="rounded-full border border-golden/20 bg-golden/5 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-golden">
+                  Verified Identity
                 </div>
-                <div className="mt-1 text-sm text-moonlight/50">
-                  Blood Type · O−&nbsp;&nbsp;|&nbsp;&nbsp;Organ Donor · Yes
-                </div>
+              </div>
 
-                <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
-                  <Pill label="Allergy" value="Penicillin" tone="danger" />
-                  <Pill label="Allergy" value="Shellfish" tone="warn" />
-                  <Pill label="Condition" value="Asthma" tone="warn" />
-                  <Pill label="Medication" value="Salbutamol" tone="ok" />
-                </div>
-
-                {/* Emergency contact — frosted glass layer */}
-                <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm shadow-glass">
-                  <div className="text-[11px] font-medium uppercase tracking-widest text-moonlight/40">
-                    Emergency contact
+              {/* Patient Profile */}
+              <div className="mt-10 flex items-end justify-between">
+                <div>
+                  <h2 className="font-display text-4xl font-medium tracking-tight text-white md:text-5xl">
+                    Maria Santos
+                  </h2>
+                  <div className="mt-3 flex items-center gap-4 text-xs font-medium tracking-widest text-moonlight/40">
+                    <span className="flex items-center gap-1.5">
+                      <User className="h-3 w-3" /> 34 YEARS
+                    </span>
+                    <span className="h-1 w-1 rounded-full bg-white/10" />
+                    <span className="flex items-center gap-1.5">
+                      <Activity className="h-3 w-3" /> O-NEGATIVE
+                    </span>
                   </div>
-                  <div className="mt-1.5 text-base font-medium">
-                    Andres Santos · Spouse
+                </div>
+                <div className="hidden h-16 w-16 items-center justify-center rounded-2xl border border-white/5 bg-white/5 backdrop-blur-md sm:flex">
+                  <div className="h-10 w-10 opacity-20 transition-opacity group-hover:opacity-40">
+                    <Logo variant="light" />
                   </div>
-                  <div className="text-sm text-moonlight/50">
-                    +63 917 555 0142
+                </div>
+              </div>
+
+              {/* Decorative Divider */}
+              <div className="my-8 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+              {/* Medical Data Grid */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <MedicalTile
+                  icon={ShieldAlert}
+                  label="Critical Allergy"
+                  value="Penicillin"
+                  tone="danger"
+                />
+                <MedicalTile
+                  icon={AlertCircle}
+                  label="Food Allergy"
+                  value="Shellfish"
+                  tone="warn"
+                />
+                <MedicalTile
+                  icon={Activity}
+                  label="Condition"
+                  value="Chronic Asthma"
+                  tone="warn"
+                />
+                <MedicalTile
+                  icon={PillIcon}
+                  label="Medication"
+                  value="Salbutamol"
+                  tone="ok"
+                />
+              </div>
+
+              {/* Bottom Drawer: Emergency Contact */}
+              <div className="mt-8 rounded-3xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-md transition-all hover:bg-white/[0.06]">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-moonlight/30">
+                      Primary Contact
+                    </div>
+                    <div className="mt-1 flex items-center gap-2 text-base font-semibold">
+                      Andres Santos
+                      <span className="rounded-md bg-white/5 px-1.5 py-0.5 text-[9px] font-medium uppercase text-moonlight/40">
+                        Spouse
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-golden/10 border border-golden/20">
+                    <Heart className="h-4 w-4 text-golden" fill="currentColor" fillOpacity={0.1} />
+                  </div>
+                </div>
+                <div className="mt-2 flex items-center gap-2 text-sm text-moonlight/50">
+                  <span className="font-mono">+63 917 555 0142</span>
+                </div>
+              </div>
+
+              {/* Holographic "Scan" Line */}
+              <div className="pointer-events-none absolute left-0 top-0 h-[2px] w-full animate-[scan_4s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-golden/40 to-transparent opacity-20" />
+            </div>
+
+            {/* Secondary Floating Card (The Passport) */}
+            <div className="absolute -bottom-6 -right-6 hidden rounded-2xl border border-white/10 bg-night/80 p-4 shadow-2xl backdrop-blur-xl transition-all duration-700 hover:translate-y-[-10px] md:block">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-lg bg-golden/20 flex items-center justify-center">
+                  <div className="h-6 w-6 border-2 border-golden rounded-sm flex items-center justify-center">
+                    <div className="h-2 w-2 bg-golden rounded-full" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-moonlight/40">
+                    ID: MP-2026-004
+                  </div>
+                  <div className="text-xs font-semibold text-golden">
+                    Permanent QR Active
                   </div>
                 </div>
               </div>
@@ -323,9 +421,9 @@ export default function HomePage() {
                 </h4>
                 <ul className="space-y-3 text-sm">
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
+                    <Link href="/privacy" className="transition-colors hover:text-golden">
                       Privacy Policy
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a href="#" className="transition-colors hover:text-golden">
@@ -420,9 +518,9 @@ export default function HomePage() {
               Ideathon project
             </div>
             <div className="flex items-center gap-6 text-xs text-muted-foreground/50">
-              <a href="#" className="transition-colors hover:text-golden">
+              <Link href="/privacy" className="transition-colors hover:text-golden">
                 Privacy
-              </a>
+              </Link>
               <a href="#" className="transition-colors hover:text-golden">
                 Terms
               </a>

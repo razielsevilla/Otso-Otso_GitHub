@@ -47,6 +47,13 @@ a {
     50% { transform: scale(1.05); opacity: 0.8; }
   }
 
+  @keyframes scan {
+    0% { top: 0%; opacity: 0; }
+    5% { opacity: 0.6; }
+    95% { opacity: 0.6; }
+    100% { top: 100%; opacity: 0; }
+  }
+
   .group-hover\:animate-qr-breathe {
     animation: qr-breathe 2s ease-in-out infinite;
   }
