@@ -1,7 +1,5 @@
 import { Activity, ShieldAlert } from 'lucide-react';
 
-import { AdminLayout } from "@/components/layout/AdminLayout";
-
 const metrics = [
   { label: 'PATIENTS', value: '12,840', note: '+213 this week' },
   { label: 'VERIFIED EXPERTS', value: '487', note: '9 pending review' },
@@ -24,34 +22,36 @@ const recentEvents = [
 
 export default function OverviewPage() {
   return (
-    <AdminLayout activePath="/overview">
-      <div className="space-y-10">
+    <div className="space-y-10">
+      <div className="mx-auto w-full max-w-6xl">
         {/* Page Header */}
-        <header>
+        <header className="text-left">
           <h1 className="font-serif text-[2.75rem] font-bold tracking-tight text-[#0D152B]">
             System overview
           </h1>
-          <p className="mt-1 font-sans text-lg text-[#64748b]">
+          <p className="mt-3 font-sans text-lg text-[#64748b]">
             Live signals across the Lunas platform.
           </p>
         </header>
 
         {/* Primary Metric Row */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {metrics.map((metric) => (
-            <article
-              key={metric.label}
-              className="rounded-[22px] border border-neutral-200 bg-[#FDF9F3] px-6 py-4"
-            >
-              <p className="whitespace-nowrap font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-[#24466f]">{metric.label}</p>
-              <p className="mt-3 whitespace-nowrap font-serif text-[44px] font-semibold leading-none tracking-tight text-[#0D152B]">{metric.value}</p>
-              <p className="mt-2 whitespace-nowrap font-sans text-[16px] text-[#2f4f75]">{metric.note}</p>
-            </article>
-          ))}
+        <div className="mt-6 flex justify-center">
+          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {metrics.map((metric) => (
+              <article
+                key={metric.label}
+                className="m-2 flex min-h-[116px] flex-col justify-center rounded-2xl border border-neutral-200 bg-[#FDF9F3] px-6 py-4"
+              >
+                <p className="font-sans text-xs font-medium uppercase tracking-wider text-[#355070]">{metric.label}</p>
+                <p className="mt-2 font-serif text-3xl font-bold leading-tight text-[#0D152B]">{metric.value}</p>
+                <p className="mt-2 text-sm text-[#556f94]">{metric.note}</p>
+              </article>
+            ))}
+          </div>
         </div>
 
         {/* Functional Dashboard Grid */}
-        <div className="grid gap-8 lg:grid-cols-5">
+        <div className="mt-10 grid gap-8 lg:grid-cols-5">
           {/* 1. Pending Verifications (Left Column) */}
           <article className="rounded-2xl border border-neutral-200 bg-white p-8 lg:col-span-3">
             <div className="mb-8 flex items-center gap-2">
@@ -110,6 +110,6 @@ export default function OverviewPage() {
           </article>
         </div>
       </div>
-    </AdminLayout>
+    </div>
   );
 }

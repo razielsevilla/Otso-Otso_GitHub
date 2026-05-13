@@ -1,3 +1,5 @@
+"use client";
+
 import type { TableColumn } from '@/components/ui/Table';
 
 import { AdminLayout } from "@/components/layout/AdminLayout";

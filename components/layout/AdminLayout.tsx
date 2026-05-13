@@ -1,4 +1,7 @@
+"use client";
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { 
   LayoutGrid, 
   User, 
@@ -28,39 +31,41 @@ const navigation: NavItem[] = [
 
 export interface AdminLayoutProps {
   children: ReactNode;
-  activePath?: string;
 }
 
-function NavigationLink({ item, active }: { item: NavItem; active: boolean }) {
+function NavigationLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
   const Icon = item.icon;
 
   return (
     <Link
       href={item.href}
+      // Prefetching is true by default in Next.js, ensuring "fast" routing
+      prefetch={true} 
       className={cn(
-        'group relative flex items-center gap-3 px-6 py-3 text-[15px] transition-all',
-        active 
+        'group relative flex items-center gap-3 px-6 py-3 text-[15px] transition-all duration-200',
+        isActive 
           ? 'bg-[#1a233a] font-bold text-white' 
-          : 'font-medium text-[#94a3b8] hover:text-white'
+          : 'font-medium text-[#94a3b8] hover:text-white hover:bg-[#1a233a]/50'
       )}
     >
       {/* Active Indicator: Thin vertical amber line on far-left edge */}
-      {active && (
+      {isActive && (
         <div className="absolute left-0 h-3/5 w-[3px] rounded-r-full bg-[#f59e0b]" />
       )}
       
       <Icon className={cn(
         'h-5 w-5 transition-colors', 
-        active ? 'text-white' : 'text-[#64748b] group-hover:text-[#94a3b8]'
+        isActive ? 'text-white' : 'text-[#64748b] group-hover:text-[#94a3b8]'
       )} />
       
-      {/* Navigation labels: Clean sans-serif */}
       <span className="font-sans">{item.label}</span>
     </Link>
   );
 }
 
-export function AdminLayout({ children, activePath }: AdminLayoutProps) {
+export function AdminLayout({ children }: AdminLayoutProps) {
+  const pathname = usePathname();
+
   return (
     <div className="flex min-h-screen bg-[#FDF9F3]">
       {/* Sidebar: Deep navy blue background */}
@@ -69,11 +74,9 @@ export function AdminLayout({ children, activePath }: AdminLayoutProps) {
         {/* Header & Branding */}
         <div className="flex items-center gap-3 px-6 py-10">
           <div className="relative flex h-8 w-12 items-center">
-            {/* Logo: Overlapping warm golden ochre and solid cream circles */}
             <div className="absolute left-0 h-7 w-7 rounded-full bg-[#b48a4d] opacity-90 shadow-lg" />
             <div className="absolute left-4 h-7 w-7 rounded-full bg-[#FDF9F3] shadow-md" />
           </div>
-          {/* Brand Name: High-contrast serif typeface */}
           <h1 className="font-serif text-3xl font-bold tracking-tight text-white">
             Lunas
           </h1>
@@ -81,21 +84,27 @@ export function AdminLayout({ children, activePath }: AdminLayoutProps) {
 
         {/* Primary Navigation Items */}
         <nav className="flex flex-1 flex-col gap-1">
-          {navigation.map((item) => (
-            <NavigationLink 
-              key={item.href} 
-              item={item} 
-              active={activePath ? activePath === item.href : false} 
-            />
-          ))}
+          {navigation.map((item) => {
+            // Check if the current path starts with the item href to keep it active for sub-routes
+            const isActive = pathname.startsWith(item.href);
+            return (
+              <NavigationLink 
+                key={item.href} 
+                item={item} 
+                isActive={isActive} 
+              />
+            );
+          })}
         </nav>
 
         {/* Footer Actions */}
         <div className="mt-auto">
-          {/* Visual Separation: Thin, dark horizontal divider */}
           <div className="mx-6 border-t border-[#1e293b]" />
           
-          <button className="flex w-full items-center gap-3 px-6 py-8 text-[15px] font-medium text-[#94a3b8] transition-colors hover:text-white">
+          <button 
+            onClick={() => {/* Implement Logout Logic */}}
+            className="flex w-full items-center gap-3 px-6 py-8 text-[15px] font-medium text-[#94a3b8] transition-colors hover:text-white"
+          >
             <LogOut className="h-5 w-5 text-[#64748b]" />
             <span className="font-sans">Log Out</span>
           </button>
