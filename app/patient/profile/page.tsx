@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { PatientLayout } from '@/components/layout/PatientLayout';
-import { Trash2, Plus, AlertTriangle, ChevronUp, ChevronDown, Save, Loader2, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
+import { Trash2, Plus, ChevronUp, ChevronDown, Save, Loader2, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import LunasLoader from '@/components/ui/loader'; //
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
@@ -10,10 +12,8 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [notification, setNotification] = useState<{ type: 'success' | 'error', text: string } | null>(null);
-  const [drugInteractions, setDrugInteractions] = useState<any[]>([]);
   const [operatingOnItem, setOperatingOnItem] = useState<string | null>(null);
   
-  // State for collapsible sections
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
     basic: false,
     allergies: false,
@@ -69,18 +69,11 @@ export default function ProfilePage() {
     loadProfile();
   }, []);
 
-  // Handlers for dynamic lists (Add/Remove)
   const addItem = (field: string, defaultValue: object) => {
     setProfile({
       ...profile,
       [field]: [...(profile[field] || []), defaultValue]
     });
-  };
-
-  const removeItem = (field: string, index: number) => {
-    const newList = [...profile[field]];
-    newList.splice(index, 1);
-    setProfile({ ...profile, [field]: newList });
   };
 
   const updateListItem = (field: string, index: number, key: string, value: string) => {
@@ -89,62 +82,6 @@ export default function ProfilePage() {
     setProfile({ ...profile, [field]: newList });
   };
 
-  // Item-level add handlers with loading states
-  const addItemWithSave = async (field: string, item: any) => {
-    const itemKey = `add-${field}-${Date.now()}`;
-    setOperatingOnItem(itemKey);
-    try {
-      let endpoint = '';
-      let body: any = {};
-
-      if (field === 'allergies') {
-        endpoint = '/api/patient/allergies';
-        body = { allergen: item.allergen, reaction: item.reaction, severity: item.severity || 'MILD' };
-      } else if (field === 'medications') {
-        endpoint = '/api/patient/medications';
-        body = { name: item.name, dosage: item.dosage, frequency: item.frequency, prescribedFor: item.prescribedFor, rxNormCode: item.rxNormCode };
-      } else if (field === 'surgeries') {
-        endpoint = '/api/patient/surgeries';
-        body = { procedure: item.procedure, datePerformed: item.datePerformed, hospital: item.hospital, notes: item.notes };
-      } else if (field === 'emergencyContacts') {
-        endpoint = '/api/patient/emergency-contacts';
-        body = { name: item.name, relationship: item.relationship, mobile: item.mobile, email: item.email };
-      }
-
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      if (res.ok) {
-        const newItem = await res.json();
-        // Update local state with the newly created item (with ID)
-        const updatedList = profile[field].map((i: any) => 
-          i === item ? { ...i, ...newItem } : i
-        );
-        setProfile({ ...profile, [field]: updatedList });
-        showNotification('success', `${field === 'emergencyContacts' ? 'Contact' : field.slice(0, -1)} added successfully`);
-        
-        // Reload to get fresh drug interactions if medications
-        if (field === 'medications') {
-          const profileRes = await fetch('/api/patient/profile');
-          if (profileRes.ok) {
-            const updated = await profileRes.json();
-            setProfile(updated);
-          }
-        }
-      } else {
-        showNotification('error', `Failed to add item`);
-      }
-    } catch (err) {
-      showNotification('error', `Error adding item`);
-    } finally {
-      setOperatingOnItem(null);
-    }
-  };
-
-  // Item-level delete handlers with loading states
   const deleteItemWithSave = async (field: string, itemId: string, itemName: string) => {
     const itemKey = `del-${field}-${itemId}`;
     setOperatingOnItem(itemKey);
@@ -158,12 +95,10 @@ export default function ProfilePage() {
       const res = await fetch(endpoint, { method: 'DELETE' });
 
       if (res.ok) {
-        // Remove from local state
         const updatedList = profile[field].filter((i: any) => i.id !== itemId);
         setProfile({ ...profile, [field]: updatedList });
         showNotification('success', `Item removed successfully`);
         
-        // Reload to get fresh drug interactions if medications
         if (field === 'medications') {
           const profileRes = await fetch('/api/patient/profile');
           if (profileRes.ok) {
@@ -187,7 +122,6 @@ export default function ProfilePage() {
     const errors: string[] = [];
 
     try {
-      // 1. Save basic profile fields
       const basicRes = await fetch('/api/patient/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -200,134 +134,33 @@ export default function ProfilePage() {
         }),
       });
 
-      if (!basicRes.ok) {
-        errors.push("Failed to update basic profile");
-      }
+      if (!basicRes.ok) errors.push("Failed to update basic profile");
 
-      // 2. Handle Allergies (add new, delete removed)
-      // Add new allergies (no id)
-      for (const allergy of profile.allergies || []) {
-        if (!allergy.id) {
-          const addRes = await fetch('/api/patient/allergies', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              allergen: allergy.allergen, 
-              reaction: allergy.reaction,
-              severity: allergy.severity || 'MILD'
-            }),
-          });
-          if (!addRes.ok) {
-            errors.push(`Failed to add allergy: ${allergy.allergen}`);
+      // Handle Collections (Allergies, Meds, etc.)
+      const collections = [
+        { field: 'allergies', endpoint: '/api/patient/allergies' },
+        { field: 'medications', endpoint: '/api/patient/medications' },
+        { field: 'surgeries', endpoint: '/api/patient/surgeries' },
+        { field: 'emergencyContacts', endpoint: '/api/patient/emergency-contacts' }
+      ];
+
+      for (const col of collections) {
+        // Add New
+        for (const item of profile[col.field] || []) {
+          if (!item.id) {
+            const res = await fetch(col.endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(item),
+            });
+            if (!res.ok) errors.push(`Failed to add item to ${col.field}`);
           }
         }
-      }
-
-      // Delete removed allergies
-      for (const origAllergy of originalProfile.allergies || []) {
-        if (origAllergy.id && !profile.allergies?.find((a: any) => a.id === origAllergy.id)) {
-          const delRes = await fetch(`/api/patient/allergies/${origAllergy.id}`, {
-            method: 'DELETE',
-          });
-          if (!delRes.ok) {
-            errors.push(`Failed to delete allergy: ${origAllergy.allergen}`);
-          }
-        }
-      }
-
-      // 3. Handle Medications (add new, delete removed)
-      // Add new medications (no id)
-      for (const med of profile.medications || []) {
-        if (!med.id) {
-          const addRes = await fetch('/api/patient/medications', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              name: med.name, 
-              dosage: med.dosage, 
-              frequency: med.frequency,
-              prescribedFor: med.prescribedFor,
-              rxNormCode: med.rxNormCode,
-            }),
-          });
-          if (!addRes.ok) {
-            errors.push(`Failed to add medication: ${med.name}`);
-          }
-        }
-      }
-
-      // Delete removed medications
-      for (const origMed of originalProfile.medications || []) {
-        if (origMed.id && !profile.medications?.find((m: any) => m.id === origMed.id)) {
-          const delRes = await fetch(`/api/patient/medications/${origMed.id}`, {
-            method: 'DELETE',
-          });
-          if (!delRes.ok) {
-            errors.push(`Failed to delete medication: ${origMed.name}`);
-          }
-        }
-      }
-
-      // 4. Handle Surgeries (add new, delete removed)
-      // Add new surgeries (no id)
-      for (const surgery of profile.surgeries || []) {
-        if (!surgery.id) {
-          const addRes = await fetch('/api/patient/surgeries', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              procedure: surgery.procedure, 
-              datePerformed: surgery.datePerformed,
-              hospital: surgery.hospital,
-              notes: surgery.notes,
-            }),
-          });
-          if (!addRes.ok) {
-            errors.push(`Failed to add surgery: ${surgery.procedure}`);
-          }
-        }
-      }
-
-      // Delete removed surgeries
-      for (const origSurgery of originalProfile.surgeries || []) {
-        if (origSurgery.id && !profile.surgeries?.find((s: any) => s.id === origSurgery.id)) {
-          const delRes = await fetch(`/api/patient/surgeries/${origSurgery.id}`, {
-            method: 'DELETE',
-          });
-          if (!delRes.ok) {
-            errors.push(`Failed to delete surgery: ${origSurgery.procedure}`);
-          }
-        }
-      }
-
-      // 5. Handle Emergency Contacts (add new, delete removed)
-      // Add new contacts (no id)
-      for (const contact of profile.emergencyContacts || []) {
-        if (!contact.id) {
-          const addRes = await fetch('/api/patient/emergency-contacts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              name: contact.name, 
-              relationship: contact.relationship,
-              mobile: contact.mobile,
-              email: contact.email,
-            }),
-          });
-          if (!addRes.ok) {
-            errors.push(`Failed to add contact: ${contact.name}`);
-          }
-        }
-      }
-
-      // Delete removed contacts
-      for (const origContact of originalProfile.emergencyContacts || []) {
-        if (origContact.id && !profile.emergencyContacts?.find((c: any) => c.id === origContact.id)) {
-          const delRes = await fetch(`/api/patient/emergency-contacts/${origContact.id}`, {
-            method: 'DELETE',
-          });
-          if (!delRes.ok) {
-            errors.push(`Failed to delete contact: ${origContact.name}`);
+        // Delete Removed
+        for (const orig of originalProfile[col.field] || []) {
+          if (orig.id && !profile[col.field]?.find((i: any) => i.id === orig.id)) {
+            const res = await fetch(`${col.endpoint}/${orig.id}`, { method: 'DELETE' });
+            if (!res.ok) errors.push(`Failed to delete item from ${col.field}`);
           }
         }
       }
@@ -336,7 +169,6 @@ export default function ProfilePage() {
         showNotification('error', errors[0]);
       } else {
         showNotification('success', "Profile updated successfully");
-        // Reload profile to reset originalProfile
         const res = await fetch('/api/patient/profile');
         const data = await res.json();
         if (res.ok) {
@@ -351,12 +183,12 @@ export default function ProfilePage() {
     }
   }, [profile, originalProfile]);
 
+  // Use LunasLoader for initial data fetching
   if (isLoading) {
     return (
       <PatientLayout activePath="/patient/profile">
-        <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 text-[#8d8374]">
-          <Loader2 className="h-10 w-10 animate-spin" />
-          <p className="text-sm font-medium">Fetching records...</p>
+        <div className="flex h-[60vh] w-full items-center justify-center">
+          <LunasLoader />
         </div>
       </PatientLayout>
     );
@@ -410,7 +242,7 @@ export default function ProfilePage() {
         </div>
 
         <div className="space-y-6">
-          {/* 1. Basic Medical Information */}
+          {/* Basic Medical Information */}
           <div className="rounded-[2.5rem] border border-neutral-200 bg-white p-8 shadow-sm">
             <button onClick={() => toggleSection('basic')} className="flex w-full items-center justify-between border-b border-neutral-100 pb-6 outline-none">
               <h2 className="text-xl font-bold text-[#1a1c1e]">Basic Medical Information</h2>
@@ -471,7 +303,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* 2. Allergies */}
+          {/* Allergies */}
           <div className="rounded-[2.5rem] border border-neutral-200 bg-white p-8 shadow-sm">
             <button onClick={() => toggleSection('allergies')} className="flex w-full items-center justify-between border-b border-neutral-100 pb-6 outline-none">
               <h2 className="text-xl font-bold text-[#1a1c1e]">Allergies</h2>
@@ -538,7 +370,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* 3. Medications */}
+          {/* Medications */}
           <div className="rounded-[2.5rem] border border-neutral-200 bg-white p-8 shadow-sm">
             <button onClick={() => toggleSection('medications')} className="flex w-full items-center justify-between border-b border-neutral-100 pb-6 outline-none">
               <h2 className="text-xl font-bold text-[#1a1c1e]">Current Medications</h2>
@@ -546,7 +378,6 @@ export default function ProfilePage() {
             </button>
             {!collapsedSections.medications && (
               <div className="mt-8 space-y-6 animate-in fade-in duration-300">
-                {/* Drug Interaction Warning Banner */}
                 {profile.drugInteractions && profile.drugInteractions.length > 0 && (
                   <div className="rounded-2xl border-l-4 border-orange-500 bg-orange-50 p-4">
                     <div className="flex gap-3">
@@ -611,9 +442,7 @@ export default function ProfilePage() {
                   );
                 })}
                 <button 
-                  onClick={() => {
-                    addItem('medications', { name: '', dosage: '', frequency: '', prescribedFor: '', rxNormCode: '' });
-                  }}
+                  onClick={() => addItem('medications', { name: '', dosage: '', frequency: '', prescribedFor: '', rxNormCode: '' })}
                   className="flex items-center gap-2 rounded-xl border border-dashed border-neutral-300 px-4 py-3 text-sm font-bold text-[#8d8374] hover:bg-neutral-50"
                 >
                   <Plus className="h-4 w-4" /> Add Another Medication
@@ -622,7 +451,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* 4. Surgeries */}
+          {/* Surgeries */}
           <div className="rounded-[2.5rem] border border-neutral-200 bg-white p-8 shadow-sm">
             <button onClick={() => toggleSection('surgeries')} className="flex w-full items-center justify-between border-b border-neutral-100 pb-6 outline-none">
               <h2 className="text-xl font-bold text-[#1a1c1e]">Previous Surgeries</h2>
@@ -692,7 +521,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* 5. Emergency Contacts */}
+          {/* Emergency Contacts */}
           <div className="rounded-[2.5rem] border border-neutral-200 bg-white p-8 shadow-sm">
             <button onClick={() => toggleSection('contacts')} className="flex w-full items-center justify-between border-b border-neutral-100 pb-6 outline-none">
               <h2 className="text-xl font-bold text-[#1a1c1e]">Emergency Contacts</h2>
@@ -766,7 +595,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* 6. Additional Notes */}
+          {/* Additional Notes */}
           <div className="rounded-[2.5rem] border border-neutral-200 bg-white p-8 shadow-sm">
             <button onClick={() => toggleSection('notes')} className="flex w-full items-center justify-between border-b border-neutral-100 pb-6 outline-none">
               <h2 className="text-xl font-bold text-[#1a1c1e]">Additional Notes</h2>
