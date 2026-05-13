@@ -69,19 +69,19 @@ feature/landing-page      → Member G
 - [x] Confirm everyone can `git clone`, `npm install`, copy `.env`, and `npm run dev`
 
 ### All Coders (Dev A–E)
-- [ ] Clone repo
-- [ ] Set up `.env`
-- [ ] Run `npm run dev` — confirm app loads
-- [ ] Check out your assigned feature branch
+- [x] Clone repo
+- [x] Set up `.env`
+- [x] Run `npm run dev` — confirm app loads
+- [x] Check out your assigned feature branch
 
 ### Member G
-- [ ] Create the project landing page: design, copy, and implementation
-- [ ] Scaffold `app/landing` (or `pages/index.tsx`) with a responsive Tailwind layout
-- [ ] Coordinate visuals and copy with Member H and prepare demo CTA / assets
+- [x] Create the project landing page: design, copy, and implementation
+- [x] Scaffold `app/page.tsx` with a responsive Tailwind layout
+- [x] Coordinate visuals and copy with Member H and prepare demo CTA / assets
 
 ### Member H
-- [ ] Begin slide deck outline (Problem → Solution → Demo → Tech Stack → Team)
-- [ ] Prepare demo script: patient registration → QR generation → professional scan → emergency view
+- [x] Begin slide deck outline (Problem → Solution → Demo → Tech Stack → Team)
+- [x] Prepare demo script: patient registration → QR generation → professional scan → emergency view
 
 ---
 
