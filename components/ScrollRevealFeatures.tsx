@@ -104,36 +104,36 @@ export function ScrollRevealFeatures() {
   return (
     <section
       id="features"
-      className="relative overflow-hidden bg-ivory py-16 md:py-24"
+      className="relative overflow-hidden bg-ivory py-20 md:py-32"
     >
       <div className="mx-auto max-w-6xl px-6">
         {/* HEADING */}
-        <div ref={heroRef} className="mb-12 max-w-3xl">
-          <h2 className="hero-line font-display text-5xl font-bold leading-[1.05] tracking-tighter text-night md:text-7xl">
+        <div ref={heroRef} className="mb-16 max-w-3xl">
+          <h2 className="hero-line font-display text-5xl font-bold leading-[1.05] tracking-tighter text-night md:text-6xl lg:text-7xl">
             Built for the moments
           </h2>
           <div
-            className="hero-line mt-2 overflow-hidden"
+            className="hero-line mt-3 overflow-hidden"
             style={{ perspective: "600px", minHeight: "1.3em" }}
           >
             <span
               ref={cycleRef}
               key={currentWord}
-              className="inline-block font-display text-5xl font-bold tracking-tighter text-golden italic md:text-7xl"
+              className="inline-block font-display text-5xl font-bold tracking-tighter text-golden italic md:text-6xl lg:text-7xl"
             >
               {cyclingWords[currentWord]}
             </span>
           </div>
-          <p className="hero-line mt-6 text-lg leading-relaxed text-muted-foreground/80">
+          <p className="hero-line mt-8 text-lg leading-relaxed text-muted-foreground/80">
             A medical passport designed for resilience. We stripped away the
-            complexity to focus on the four pillars of emergency readiness.
+            complexity to focus on what matters most in an emergency.
           </p>
         </div>
 
         {/* BENTO GRID */}
         <div
           ref={cardsRef}
-          className="grid gap-4 md:grid-cols-12 md:grid-rows-2"
+          className="grid gap-5 md:grid-cols-12 md:grid-rows-2"
         >
           {/* 1. Complete Medical Context (Wide) - NOW WHITE */}
           <div className="bento-card group relative overflow-hidden rounded-3xl bg-white p-8 text-night md:col-span-8 md:row-span-1 border border-border/50 shadow-soft transition-all duration-700 hover:scale-[1.01]">

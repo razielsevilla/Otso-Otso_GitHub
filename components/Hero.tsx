@@ -94,31 +94,29 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={heroRef} className="mx-auto max-w-6xl px-6 pb-28 pt-8">
-      <div className="grid items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
+    <section ref={heroRef} className="mx-auto max-w-6xl px-6 pb-32 pt-12 md:pb-40">
+      <div className="grid items-center gap-12 md:gap-20 md:grid-cols-[1.1fr_0.9fr]">
         {/* Left — Copy */}
         <div>
-          <h1 className="hero-left-anim font-display text-5xl font-semibold leading-[1.05] tracking-tighter text-night md:text-7xl text-balance opacity-0">
+          <h1 className="hero-left-anim font-display text-5xl font-semibold leading-[1.05] tracking-tighter text-night md:text-6xl lg:text-7xl text-balance opacity-0">
             Your medical passport,{" "}
             <em className="text-night/70">always with you.</em>
           </h1>
 
-          <p className="hero-left-anim mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground text-balance opacity-0">
-            <span style={{ color: '#CFA157' }} className="font-semibold">Lunas</span> turns critical health information into a permanent QR code
-            only verified medical professionals can read — so the people who
-            treat you in an emergency see what matters in seconds.
+          <p className="hero-left-anim mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground text-balance opacity-0">
+            <span style={{ color: '#CFA157' }} className="font-semibold">Lunas</span> encrypts your complete medical history into a permanent QR code that only verified medical professionals can access — giving emergency responders your full clinical context in seconds, not minutes.
           </p>
 
-          <div className="hero-left-anim mt-10 flex flex-wrap items-center gap-4 opacity-0">
+          <div className="hero-left-anim mt-12 flex flex-col gap-4 sm:flex-row sm:items-center opacity-0">
             <Link
               href="/register"
-              className="rounded-full bg-night px-7 py-3.5 text-sm font-semibold text-white transition-all hover:shadow-glow"
+              className="inline-flex items-center justify-center h-12 rounded-full bg-night px-8 py-3.5 text-center text-sm font-semibold text-white transition-all hover:shadow-glow hover:scale-105 active:scale-95"
             >
               Create your passport
             </Link>
             <Link
               href="/scan/demo-mp-2026-00428"
-              className="rounded-full border border-border bg-white px-7 py-3.5 text-sm font-semibold text-night transition-all hover:border-golden/40 hover:shadow-soft"
+              className="inline-flex items-center justify-center h-12 rounded-full border border-border bg-white px-8 py-3.5 text-center text-sm font-semibold text-night transition-all hover:border-golden/40 hover:shadow-soft hover:scale-105 active:scale-95"
             >
               Try a demo scan
             </Link>
