@@ -33,6 +33,11 @@ export default function PinEntryPage() {
         const response = await fetch(`/api/scan/${uuid}`, { cache: 'no-store' });
         const data = (await response.json()) as Partial<ScanPreviewResponse> & { error?: string };
 
+        if (response.status === 401 || response.status === 403) {
+          router.push(`/login?redirect=/scan/${uuid}`);
+          return;
+        }
+
         if (!response.ok) {
           setIsInvalidQr(true);
           throw new Error(data.error || 'Unable to load patient preview.');
@@ -154,9 +159,6 @@ export default function PinEntryPage() {
               {error && (
                 <p className="text-sm text-red-300 text-center">
                   {error}
-                  {attempt > 1 && !error.includes('locked') && (
-                    <span className="block mt-1">Attempt {attempt} of 5</span>
-                  )}
                 </p>
               )}
 
