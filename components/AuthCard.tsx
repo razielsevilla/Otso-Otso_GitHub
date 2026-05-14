@@ -36,16 +36,17 @@ export function AuthCard({ initialView, loginPanel, registerPanel }: AuthCardPro
           style={{
             display: "flex",
             width: "200%",
+            height: "100%",
             transform: view === "login" ? "translateX(0)" : "translateX(-50%)",
           }}
         >
           {/* Login slot */}
-          <div style={{ width: "50%" }}>
+          <div style={{ width: "50%", height: "100%" }}>
             {loginPanel}
           </div>
 
           {/* Register slot */}
-          <div style={{ width: "50%" }}>
+          <div style={{ width: "50%", display: "flex", flexDirection: "column" }}>
             {registerPanel}
           </div>
         </div>

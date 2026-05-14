@@ -41,7 +41,7 @@ function LoginPageInner() {
 // RegisterPageComponent for use in AuthCard
 function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => void }) {
   return (
-    <div className="flex w-full min-h-[600px] bg-white">
+    <div className="flex w-full h-full bg-white">
         
         {/* Left Section: Branding & Pattern */}
         <div className="relative w-1/2 bg-[#001F2D] p-12 flex flex-col items-center justify-center text-center text-white overflow-hidden">
@@ -79,7 +79,7 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
           </div>
 
           <div className="flex-grow flex flex-col justify-center">
-            <h2 className="text-5xl font-serif font-bold text-[#001F2D] mb-2">
+            <h2 className="text-5xl font-playfair font-bold text-[#001F2D] mb-2">
               Choose your role
             </h2>
             <p className="text-slate-500 mb-10">
@@ -202,17 +202,23 @@ function LoginForm({ onSwitchToRegister }: { onSwitchToRegister: () => void }) {
   };
 
   return (
-    <div className="flex w-full min-h-[600px] bg-white">
+    <div className="flex w-full h-full bg-white">
       {/* Left Column - Form */}
       <main className="flex w-full flex-col p-8 md:p-16 lg:w-1/2">
         <div className="mx-auto w-full max-w-md">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-amber-200 to-amber-500" />
+            <img 
+              src="/logo/lunas-logo.png" 
+              alt="Lunas Logo" 
+              width="32" 
+              height="32"
+              className="object-contain"
+            />
             <span className="text-xl font-bold text-[#0f172a]">Lunas</span>
           </div>
 
           <div className="mt-20">
-            <h1 className="text-5xl font-bold tracking-tight text-[#1a1c1e]">Sign In</h1>
+            <h1 className="text-5xl font-playfair font-bold tracking-tight text-[#1a1c1e]">Sign In</h1>
             <p className="mt-3 text-lg font-medium text-[#8d8374]">Enter your portal credentials</p>
           </div>
 
@@ -330,7 +336,7 @@ function LoginForm({ onSwitchToRegister }: { onSwitchToRegister: () => void }) {
       </main>
 
       {/* Right Column - Branding */}
-      <div className="relative hidden w-1/2 flex-col items-center justify-center bg-[#0f172a] p-12 lg:flex">
+      <div className="relative hidden w-1/2 flex-col items-center justify-center bg-[#0B1120] p-12 lg:flex">
         <div className="absolute inset-0 opacity-20" 
              style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} 
         />
@@ -338,7 +344,7 @@ function LoginForm({ onSwitchToRegister }: { onSwitchToRegister: () => void }) {
           <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-3xl bg-white/10 backdrop-blur-md">
             <Stethoscope className="h-8 w-8 text-white" />
           </div>
-          <h2 className="text-5xl font-bold tracking-tight text-white leading-tight">Join Lunas</h2>
+          <h2 className="text-5xl font-playfair font-bold tracking-tight text-white leading-tight">Join Lunas</h2>
           <p className="mt-6 max-w-xs text-lg text-white/60 leading-relaxed">
             Be part of a safer, smarter way to carry your medical record.
           </p>

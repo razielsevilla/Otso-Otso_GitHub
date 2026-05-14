@@ -96,17 +96,23 @@ function LoginFormComponent({ onSwitchToRegister }: { onSwitchToRegister: () => 
   };
 
   return (
-    <div className="flex w-full min-h-[600px] bg-white">
+    <div className="flex w-full h-full bg-white items-stretch">
       {/* Left Column - Form */}
       <main className="flex w-full flex-col p-8 md:p-16 lg:w-1/2">
         <div className="mx-auto w-full max-w-md">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-amber-200 to-amber-500" />
+            <img 
+              src="/logo/lunas-logo.png" 
+              alt="Lunas Logo" 
+              width="32" 
+              height="32"
+              className="object-contain"
+            />
             <span className="text-xl font-bold text-[#0f172a]">Lunas</span>
           </div>
 
           <div className="mt-20">
-            <h1 className="text-5xl font-bold tracking-tight text-[#1a1c1e]">Sign In</h1>
+            <h1 className="text-5xl font-playfair font-bold tracking-tight text-[#1a1c1e]">Sign In</h1>
             <p className="mt-3 text-lg font-medium text-[#8d8374]">Enter your portal credentials</p>
           </div>
 
@@ -232,7 +238,7 @@ function LoginFormComponent({ onSwitchToRegister }: { onSwitchToRegister: () => 
           <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-3xl bg-white/10 backdrop-blur-md">
             <Stethoscope className="h-8 w-8 text-white" />
           </div>
-          <h2 className="text-5xl font-bold tracking-tight text-white leading-tight">Join Lunas</h2>
+          <h2 className="text-5xl font-playfair font-bold tracking-tight text-white leading-tight">Join Lunas</h2>
           <p className="mt-6 max-w-xs text-lg text-white/60 leading-relaxed">
             Be part of a safer, smarter way to carry your medical record.
           </p>
@@ -252,10 +258,10 @@ function LoginFormComponent({ onSwitchToRegister }: { onSwitchToRegister: () => 
 // Register Page Component
 function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => void }) {
   return (
-    <div className="flex w-full min-h-[600px] bg-white">
+    <div className="flex w-full h-full bg-white">
         
         {/* Left Section: Branding & Pattern (Referencing Screenshot 2026-05-14 050715.png) */}
-        <div className="relative w-1/2 bg-[#001F2D] p-12 flex flex-col items-center justify-center text-center text-white overflow-hidden">
+        <div className="relative w-1/2 bg-[#0B1120] p-12 flex flex-col items-center justify-center text-center text-white overflow-hidden self-stretch min-h-full">
           {/* Subtle Grid Pattern Overlay */}
           <div 
             className="absolute inset-0 opacity-20" 
@@ -269,7 +275,7 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
             <div className="bg-white/10 p-4 rounded-2xl inline-block mb-8 backdrop-blur-sm border border-white/10">
               <Stethoscope size={32} className="text-white" />
             </div>
-            <h1 className="text-4xl font-serif font-bold mb-4 tracking-tight">
+            <h1 className="text-4xl font-playfair font-bold mb-4 tracking-tight">
               Welcome to Lunas
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed max-w-sm mx-auto">
@@ -291,15 +297,19 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
         <div className="w-1/2 p-12 flex flex-col">
           <div className="flex justify-start items-center mb-16">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-orange-200 rounded-full flex items-center justify-center overflow-hidden">
-                 <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-100 rounded-full transform translate-x-1" />
-              </div>
+              <img 
+                src="/logo/lunas-logo.png" 
+                alt="Lunas Logo" 
+                width="32" 
+                height="32"
+                className="object-contain"
+              />
               <span className="text-2xl font-serif font-bold text-[#001F2D]">Lunas</span>
             </div>
           </div>
 
           <div className="flex-grow flex flex-col justify-center">
-            <h2 className="text-5xl font-serif font-bold text-[#001F2D] mb-2">
+            <h2 className="text-5xl font-playfair font-bold text-[#001F2D] mb-2">
               Choose your role
             </h2>
             <p className="text-slate-500 mb-10">
