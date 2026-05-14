@@ -41,10 +41,10 @@ function LoginPageInner() {
 // RegisterPageComponent for use in AuthCard
 function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => void }) {
   return (
-    <div className="flex w-full h-full bg-white">
+    <div className="flex w-full h-full bg-white items-stretch font-sans">
         
-        {/* Left Section: Branding & Pattern */}
-        <div className="relative w-1/2 bg-[#001F2D] p-12 flex flex-col items-center justify-center text-center text-white overflow-hidden">
+        {/* Left Section: Branding & Pattern — hidden on mobile, shown on lg+ */}
+        <div className="relative hidden w-1/2 bg-[#001F2D] p-12 lg:flex flex-col items-center justify-center text-center text-white overflow-hidden">
           {/* Subtle Grid Pattern Overlay */}
           <div 
             className="absolute inset-0 opacity-20" 
@@ -58,7 +58,7 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
             <div className="bg-white/10 p-4 rounded-2xl inline-block mb-8 backdrop-blur-sm border border-white/10">
               <Stethoscope size={32} className="text-white" />
             </div>
-            <h1 className="text-4xl font-serif font-bold mb-4 tracking-tight">
+            <h1 className="text-4xl font-display font-bold mb-4 tracking-tight">
               Welcome to Lunas
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed max-w-sm mx-auto">
@@ -68,18 +68,18 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
         </div>
 
         {/* Right Section: Role Selection */}
-        <div className="w-1/2 p-12 flex flex-col">
-          <div className="flex justify-start items-center mb-16">
+        <div className="w-full p-6 md:p-12 lg:w-1/2 flex flex-col">
+          <div className="flex justify-start items-center mb-10 md:mb-16">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-orange-200 rounded-full flex items-center justify-center overflow-hidden">
                  <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-100 rounded-full transform translate-x-1" />
               </div>
-              <span className="text-2xl font-serif font-bold text-[#001F2D]">Lunas</span>
+              <span className="text-2xl font-display font-bold text-[#001F2D]">Lunas</span>
             </div>
           </div>
 
-          <div className="flex-grow flex flex-col justify-center">
-            <h2 className="text-5xl font-playfair font-bold text-[#001F2D] mb-2">
+          <div className="flex-grow flex flex-col justify-center mx-auto w-full max-w-md">
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-[#001F2D] mb-2">
               Choose your role
             </h2>
             <p className="text-slate-500 mb-10">
@@ -94,7 +94,7 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
                     <HeartPulse className="text-slate-700" size={24} />
                   </div>
                   <div className="flex-grow">
-                    <h3 className="font-bold text-lg text-[#001F2D]">Patient</h3>
+                    <h3 className="font-display font-bold text-lg text-[#001F2D]">Patient</h3>
                     <p className="text-sm text-slate-500">Carry your medical record. Share it instantly when it matters.</p>
                   </div>
                   <ArrowRight className="text-slate-400 group-hover:translate-x-1 transition-transform" size={20} />
@@ -108,7 +108,7 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
                     <Stethoscope className="text-slate-700" size={24} />
                   </div>
                   <div className="flex-grow">
-                    <h3 className="font-bold text-lg text-[#001F2D]">Medical Expert</h3>
+                    <h3 className="font-display font-bold text-lg text-[#001F2D]">Medical Expert</h3>
                     <p className="text-sm text-slate-500">Verified access to patient records in clinical and emergency settings.</p>
                   </div>
                   <ArrowRight className="text-slate-400 group-hover:translate-x-1 transition-transform" size={20} />
@@ -202,7 +202,7 @@ function LoginForm({ onSwitchToRegister }: { onSwitchToRegister: () => void }) {
   };
 
   return (
-    <div className="flex w-full h-full bg-white">
+    <div className="flex w-full h-full bg-white font-sans">
       {/* Left Column - Form */}
       <main className="flex w-full flex-col p-8 md:p-16 lg:w-1/2">
         <div className="mx-auto w-full max-w-md">
@@ -214,11 +214,11 @@ function LoginForm({ onSwitchToRegister }: { onSwitchToRegister: () => void }) {
               height="32"
               className="object-contain"
             />
-            <span className="text-xl font-bold text-[#0f172a]">Lunas</span>
+            <span className="text-xl font-bold text-[#0f172a] font-display">Lunas</span>
           </div>
 
           <div className="mt-20">
-            <h1 className="text-5xl font-playfair font-bold tracking-tight text-[#1a1c1e]">Sign In</h1>
+            <h1 className="text-5xl font-display font-bold tracking-tight text-[#1a1c1e]">Sign In</h1>
             <p className="mt-3 text-lg font-medium text-[#8d8374]">Enter your portal credentials</p>
           </div>
 
@@ -344,7 +344,7 @@ function LoginForm({ onSwitchToRegister }: { onSwitchToRegister: () => void }) {
           <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-3xl bg-white/10 backdrop-blur-md">
             <Stethoscope className="h-8 w-8 text-white" />
           </div>
-          <h2 className="text-5xl font-playfair font-bold tracking-tight text-white leading-tight">Join Lunas</h2>
+          <h2 className="text-5xl font-display font-bold tracking-tight text-white leading-tight">Join Lunas</h2>
           <p className="mt-6 max-w-xs text-lg text-white/60 leading-relaxed">
             Be part of a safer, smarter way to carry your medical record.
           </p>
