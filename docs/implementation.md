@@ -31,6 +31,7 @@ feature/patient-ui        → Dev C
 feature/professional-ui   → Dev D
 feature/admin-ui          → Dev E
 feature/shared-components → Dev E (early) then everyone uses
+feature/landing-page      → Member G
 ```
 
 **Rule:** No one pushes directly to `develop`. Open a PR; Team Lead reviews and merges. Keep PRs small.
@@ -43,10 +44,10 @@ feature/shared-components → Dev E (early) then everyone uses
 |---|---|---|
 | **Phase 0** | 0:00–1:00 | Setup & scaffolding — everyone unblocked |
 | **Phase 1** | 1:00–5:00 | Foundation — DB, Auth, shared lib, core components |
-| **Phase 2** | 5:00–13:00 | Core feature development (parallel tracks) |
-| **Phase 3** | 13:00–19:00 | Integration, drug interaction, notifications |
-| **Phase 4** | 19:00–22:00 | QA, bug fixing, polish |
-| **Phase 5** | 22:00–24:00 | Demo prep, seed data, final deploy |
+| **Phase 2** | 5:00–12:00 | Core feature development (parallel tracks) |
+| **Phase 3** | 12:00–17:00 | Integration, drug interaction, notifications |
+| **Phase 4** | 17:00–20:00 | QA, bug fixing, polish |
+| **Phase 5** | 20:00–22:00 | Demo prep, seed data, final deploy |
 
 ---
 
@@ -56,32 +57,31 @@ feature/shared-components → Dev E (early) then everyone uses
 **All hands on deck. Goal: everyone can run the app locally by H+1.**
 
 ### Team Lead (You)
-- [ ] Create GitHub repo, set up branch protection on `main`
-- [ ] Run `npx create-next-app@latest lunas --typescript --tailwind --app`
-- [ ] Install all dependencies (see `ENVIRONMENT.md`)
-- [ ] Initialize Prisma: `npx prisma init`
-- [ ] Paste full schema from `DATABASE_SCHEMA.md` into `prisma/schema.prisma`
-- [ ] Create `.env.example` from `ENVIRONMENT.md`
-- [ ] Create `.env` with real values (Supabase DB, Gmail SMTP, generated keys)
-- [ ] Run `npx prisma migrate dev --name init && npx prisma generate`
-- [ ] Push to GitHub. Share `.env` privately with the team (Discord DM / secure note)
-- [ ] Confirm everyone can `git clone`, `npm install`, copy `.env`, and `npm run dev`
+- [x] Create GitHub repo, set up branch protection on `main`
+- [x] Run `npx create-next-app@latest lunas --typescript --tailwind --app`
+- [x] Install all dependencies (see `ENVIRONMENT.md`)
+- [x] Initialize Prisma: `npx prisma init`
+- [x] Paste full schema from `schema.md` into `prisma/schema.prisma`
+- [x] Create `.env.example` from `ENVIRONMENT.md`
+- [x] Create `.env` with real values (Supabase DB, Gmail SMTP, generated keys)
+- [x] Run `npx prisma migrate dev --name init && npx prisma generate`
+- [x] Push to GitHub. Share `.env` privately with the team (Discord DM / secure note)
+- [x] Confirm everyone can `git clone`, `npm install`, copy `.env`, and `npm run dev`
 
 ### All Coders (Dev A–E)
-- [ ] Clone repo
-- [ ] Set up `.env`
-- [ ] Run `npm run dev` — confirm app loads
-- [ ] Check out your assigned feature branch
+- [x] Clone repo
+- [x] Set up `.env`
+- [x] Run `npm run dev` — confirm app loads
+- [x] Check out your assigned feature branch
 
 ### Member G
-### Member G
-- [ ] Create the project landing page: design, copy, and implementation
-- [ ] Scaffold `app/landing` (or `pages/index.tsx`) with a responsive Tailwind layout
-- [ ] Coordinate visuals and copy with Member H and prepare demo CTA / assets
+- [x] Create the project landing page: design, copy, and implementation
+- [x] Scaffold `app/page.tsx` with a responsive Tailwind layout
+- [x] Coordinate visuals and copy with Member H and prepare demo CTA / assets
 
 ### Member H
-- [ ] Begin slide deck outline (Problem → Solution → Demo → Tech Stack → Team)
-- [ ] Prepare demo script: patient registration → QR generation → professional scan → emergency view
+- [x] Begin slide deck outline (Problem → Solution → Demo → Tech Stack → Team)
+- [x] Prepare demo script: patient registration → QR generation → professional scan → emergency view
 
 ---
 
@@ -96,22 +96,22 @@ feature/shared-components → Dev E (early) then everyone uses
 **Track: Auth + DB utilities**
 
 Hour 1–2:
-- [ ] `lib/db.ts` — Prisma client singleton
-- [ ] `lib/crypto.ts` — `encrypt()` / `decrypt()` functions (see `SECURITY.md`)
-- [ ] `lib/session.ts` — `createSession()`, `getSession()`, `deleteSession()`
-- [ ] `lib/auth.ts` — `hashPassword()`, `verifyPassword()`, `requireRole()`
+- [x] `lib/db.ts` — Prisma client singleton
+- [x] `lib/crypto.ts` — `encrypt()` / `decrypt()` functions (see `SECURITY.md`)
+- [x] `lib/session.ts` — `createSession()`, `getSession()`, `deleteSession()`
+- [x] `lib/auth.ts` — `hashPassword()`, `verifyPassword()`, `requireRole()`
 
 Hour 2–4:
-- [ ] `POST /api/auth/register/patient`
-- [ ] `POST /api/auth/register/professional`
-- [ ] `POST /api/auth/login`
-- [ ] `POST /api/auth/logout`
-- [ ] `GET /api/auth/me`
+- [x] `POST /api/auth/register/patient`
+- [x] `POST /api/auth/register/professional`
+- [x] `POST /api/auth/login`
+- [x] `POST /api/auth/logout`
+- [x] `GET /api/auth/me`
 
 Hour 4–5:
-- [ ] `lib/audit.ts` — `logAdminEvent()` (hashed, zero-knowledge)
-- [ ] Middleware: `middleware.ts` — redirect unauthenticated users from protected routes
-- [ ] Merge `feature/auth` → `develop`
+- [x] `lib/audit.ts` — `logAdminEvent()` (hashed, zero-knowledge)
+- [x] Middleware: `middleware.ts` — redirect unauthenticated users from protected routes
+- [x] Merge `feature/auth` → `develop`
 
 ---
 
@@ -119,19 +119,19 @@ Hour 4–5:
 **Track: QR generation utility + notification stubs**
 
 Hour 1–2:
-- [ ] `lib/mailer.ts` — Nodemailer setup, `sendEmail(to, subject, body)`
-- [ ] `lib/sms.ts` — Twilio stub (or `console.log` fallback for demo)
-- [ ] `lib/drugcheck.ts` — DrugBank API call + local fallback table (20 common dangerous pairs)
+- [x] `lib/mailer.ts` — Nodemailer setup, `sendEmail(to, subject, body)`
+- [x] `lib/sms.ts` — Twilio stub (or `console.log` fallback for demo)
+- [x] `lib/drugcheck.ts` — Local hardcoded table of the 20 most common dangerous drug pairs (DEFAULT for MVP). If `DRUGBANK_API_KEY` is provided, `lib/drugcheck.ts` may optionally query an external service (DrugBank or NIH RxNorm) for a "live" lookup.
 
 Hour 2–4:
-- [ ] `lib/qr.ts` — `generateQrImage(uuid: string): Promise<string>` (returns base64 PNG)
-- [ ] `GET /api/patient/qr` — returns QR UUID and base64 image
-- [ ] `GET /api/scan/[uuid]` — public, returns minimal patient info for PIN entry screen
+- [x] `lib/qr.ts` — `generateQrImage(uuid: string): Promise<string>` (returns base64 PNG)
+- [x] `GET /api/patient/qr` — returns QR UUID and base64 image
+- [x] `GET /api/scan/[uuid]` — public, returns minimal patient info for PIN entry screen
 
-Hour 4–5:
-- [ ] Write local drug interaction fallback table (at least 15 common pairs with severity)
-- [ ] Test `generateQrImage()` in isolation — confirm PNG output
-- [ ] Stub out notification function: `notifyEmergencyContacts(patientProfileId: string)`
+-Hour 4–5:
+- [x] Write local hardcoded drug interaction table (20 most common dangerous pairs with severity) and ensure `lib/drugcheck.ts` prefers the local table by default. Add an optional external lookup path enabled only when `DRUGBANK_API_KEY` (or other API keys) are present.
+- [x] Test `generateQrImage()` in isolation — confirm PNG output
+- [x] Stub out notification function: `notifyEmergencyContacts(patientProfileId: string)`
 
 ---
 
@@ -139,19 +139,19 @@ Hour 4–5:
 **Track: Auth pages + Patient dashboard skeleton**
 
 Hour 1–2:
-- [ ] `components/ui/` — Button, Input, Card, Badge, Spinner (Tailwind-based)
-- [ ] `components/layout/PatientLayout.tsx` — sidebar nav (Dashboard, Medical Profile, QR Code, Access Logs, Logout)
-- [ ] `app/(auth)/register/patient/page.tsx` — patient registration form
+- [x] `components/ui/` — Button, Input, Card, Badge, Spinner (Tailwind-based)
+- [x] `components/layout/PatientLayout.tsx` — sidebar nav (Dashboard, Medical Profile, QR Code, Access Logs, Logout)
+- [x] `app/(auth)/register/patient/page.tsx` — patient registration form
 
 Hour 2–4:
-- [ ] `app/(auth)/login/page.tsx` — login form (shared for all roles, redirect by role after login)
-- [ ] `app/(patient)/dashboard/page.tsx` — skeleton: profile completion %, QR status, recent access (mock data OK)
-- [ ] `app/(patient)/profile/page.tsx` — skeleton with sections: Basic Info, Allergies, Medications, Surgeries, Emergency Contacts
+- [x] `app/(auth)/login/page.tsx` — login form (shared for all roles, redirect by role after login)
+- [x] `app/(patient)/dashboard/page.tsx` — skeleton: profile completion %, QR status, recent access (mock data OK)
+- [x] `app/(patient)/profile/page.tsx` — skeleton with sections: Basic Info, Allergies, Medications, Surgeries, Emergency Contacts
 
 Hour 4–5:
-- [ ] Wire registration and login pages to Auth API (`/api/auth/*`)
-- [ ] Confirm login → redirect to `/patient/dashboard`
-- [ ] Confirm `GET /api/auth/me` drives the dashboard user display
+- [x] Wire registration and login pages to Auth API (`/api/auth/*`)
+- [x] Confirm login → redirect to `/patient/dashboard`
+- [x] Confirm `GET /api/auth/me` drives the dashboard user display
 
 ---
 
@@ -159,18 +159,18 @@ Hour 4–5:
 **Track: Professional registration + dashboard skeleton**
 
 Hour 1–2:
-- [ ] `components/layout/ProfessionalLayout.tsx` — sidebar (Dashboard, Scan Patient QR, Recent Patients, My Profile, Logout)
-- [ ] `app/(auth)/register/professional/page.tsx` — professional registration form (includes PRC number, specialization, hospital fields)
+- [x] `components/layout/ProfessionalLayout.tsx` — sidebar (Dashboard, Scan Patient QR, Recent Patients, My Profile, Logout)
+- [x] `app/(auth)/register/professional/page.tsx` — professional registration form (includes PRC number, specialization, hospital fields)
 
 Hour 2–4:
-- [ ] `app/(professional)/dashboard/page.tsx` — skeleton: scans today, patients this week, pending notes, PRC status, recent patient list
-- [ ] `app/(professional)/scan/page.tsx` — QR scanner UI (use `react-qr-reader` or camera access + `jsQR`)
-- [ ] `app/scan/[uuid]/page.tsx` — public PIN entry page (no auth required, shows patient first name, PIN input, authenticate button)
+- [x] `app/(professional)/dashboard/page.tsx` — skeleton: scans today, patients this week, pending notes, PRC status, recent patient list
+- [x] `app/(professional)/scan/page.tsx` — QR scanner UI (use `react-qr-reader` or camera access + `jsQR`)
+- [x] `app/scan/[uuid]/page.tsx` — public PIN entry page (no auth required, shows patient first name, PIN input, authenticate button)
 
 Hour 4–5:
-- [ ] Wire professional registration to API
-- [ ] Wire login → redirect to `/professional/dashboard`
-- [ ] PIN entry page should call `POST /api/scan/access` (wire up in Phase 2)
+- [x] Wire professional registration to API
+- [x] Wire login → redirect to `/professional/dashboard`
+- [x] PIN entry page should call `POST /api/scan/access` (wire up in Phase 2)
 
 ---
 
@@ -178,29 +178,29 @@ Hour 4–5:
 **Track: Shared UI components + Admin panel skeleton**
 
 Hour 1–2:
-- [ ] `components/ui/Table.tsx` — reusable sortable table
-- [ ] `components/ui/StatusBadge.tsx` — colored badge (Active/Pending/Suspended/Denied/Success)
-- [ ] `components/ui/MetricCard.tsx` — stat display card (used across all dashboards)
-- [ ] `components/layout/AdminLayout.tsx` — sidebar (Overview, Users, Expert Verifications, Audit Logs, System Health)
+- [x] `components/ui/Table.tsx` — reusable sortable table
+- [x] `components/ui/StatusBadge.tsx` — colored badge (Active/Pending/Suspended/Denied/Success)
+- [x] `components/ui/MetricCard.tsx` — stat display card (used across all dashboards)
+- [x] `components/layout/AdminLayout.tsx` — sidebar (Overview, Users, Expert Verifications, Audit Logs, System Health)
 
 Hour 2–4:
-- [ ] `app/(admin)/overview/page.tsx` — system metrics (mock data OK)
-- [ ] `app/(admin)/verifications/page.tsx` — list with Approve/Reject buttons (skeleton)
-- [ ] `app/(admin)/users/page.tsx` — user list table (skeleton)
+- [x] `app/(admin)/overview/page.tsx` — system metrics (mock data OK)
+- [x] `app/(admin)/verifications/page.tsx` — list with Approve/Reject buttons (skeleton)
+- [x] `app/(admin)/users/page.tsx` — user list table (skeleton)
 
 Hour 4–5:
-- [ ] `app/(admin)/audit-logs/page.tsx` — log table with event type filter (skeleton)
-- [ ] `app/(admin)/system-health/page.tsx` — service status cards (skeleton)
-- [ ] Push all shared UI components. Announce to team that `components/ui/*` is ready to use.
+- [x] `app/(admin)/audit-logs/page.tsx` — log table with event type filter (skeleton)
+- [x] `app/(admin)/system-health/page.tsx` — service status cards (skeleton)
+- [x] Push all shared UI components. Announce to team that `components/ui/*` is ready to use.
 
 ---
 
 ### Team Lead (You) — Hour 1–5
-- [ ] Review and merge Auth PR from Dev A as soon as it's ready
-- [ ] Set up `app/api/` folder structure (create placeholder files for all routes so no 404s block others)
-- [ ] Write `prisma/seed.ts` — seed 1 admin, 2 patients, 2 verified professionals, sample data
-- [ ] Run seed: `npx prisma db seed`
-- [ ] Coordinate blockers — if anyone is stuck for >20 min, jump in
+- [x] Review and merge Auth PR from Dev A as soon as it's ready
+- [x] Set up `app/api/` folder structure (create placeholder files for all routes so no 404s block others)
+- [x] Write `prisma/seed.ts` — seed 1 admin, 2 patients, 2 verified professionals, sample data
+- [x] Run seed: `npx prisma db seed`
+- [x] Coordinate blockers — if anyone is stuck for >20 min, jump in
 
 ---
 
@@ -212,20 +212,20 @@ Hour 4–5:
 ---
 
 ### Dev A — Patient Profile API
-- [ ] `GET /api/patient/profile` — fetch + decrypt full profile
-- [ ] `PUT /api/patient/profile` — update basic info (encrypt before save)
-- [ ] `POST /api/patient/allergies` + `DELETE /api/patient/allergies/:id`
-- [ ] `POST /api/patient/medications` + `DELETE /api/patient/medications/:id`
-  - On every medication add/delete: call `lib/drugcheck.ts` and update `DrugInteraction` records
-- [ ] `POST /api/patient/surgeries` + `DELETE /api/patient/surgeries/:id`
-- [ ] `POST /api/patient/emergency-contacts` + `DELETE /api/patient/emergency-contacts/:id`
-- [ ] `GET /api/patient/access-logs`
-- [ ] Admin routes: `GET /api/admin/overview`, `GET /api/admin/users`
+- [x] `GET /api/patient/profile` — fetch + decrypt full profile
+- [x] `PUT /api/patient/profile` — update basic info (encrypt before save)
+- [x] `POST /api/patient/allergies` + `DELETE /api/patient/allergies/:id`
+- [x] `POST /api/patient/medications` + `DELETE /api/patient/medications/:id`
+  - On every medication add/delete: call `lib/drugcheck.ts` and update `DrugInteraction` records (the service prefers the local 20-pair table for MVP; external API calls only when configured).
+- [x] `POST /api/patient/surgeries` + `DELETE /api/patient/surgeries/:id`
+- [x] `POST /api/patient/emergency-contacts` + `DELETE /api/patient/emergency-contacts/:id`
+- [x] `GET /api/patient/access-logs`
+- [x] Admin routes: `GET /api/admin/overview`, `GET /api/admin/users`
 
 ---
 
 ### Dev B — Emergency Access Flow + Notifications
-- [ ] `POST /api/scan/access` — the most critical endpoint (full implementation):
+- [x] `POST /api/scan/access` — the most critical endpoint (full implementation):
   1. Find patient by UUID
   2. Find professional by session
   3. Check `prcStatus === VERIFIED`
@@ -234,18 +234,18 @@ Hour 4–5:
   6. If fail: increment `pinFailCount`, log `DENIED`, return error
   7. If locked: log `LOCKED`, return 423
   8. If success: log `SUCCESS` (access log), fire `notifyEmergencyContacts()` async, decrypt and return patient record
-- [ ] `notifyEmergencyContacts()` — fetch emergency contacts, decrypt mobile/email, send email + SMS
-- [ ] `GET /api/admin/verifications`, `POST /api/admin/verifications/:id/approve`, `POST /api/admin/verifications/:id/reject`
+- [x] `notifyEmergencyContacts()` — fetch emergency contacts, decrypt mobile/email, send email + SMS
+- [x] `GET /api/admin/verifications`, `POST /api/admin/verifications/:id/approve`, `POST /api/admin/verifications/:id/reject`
   - Approve flow: generate PIN → hash → store → email PIN to professional
-- [ ] `GET /api/admin/audit-logs`
-- [ ] `GET /api/admin/system-health` — check DB connectivity, return mock status for other services
+- [x] `GET /api/admin/audit-logs`
+- [x] `GET /api/admin/system-health` — check DB connectivity, return mock status for other services
 
 ---
 
 ### Dev C — Patient UI (Full Implementation)
 Using the real API now (not mock data).
 
-- [ ] `app/(patient)/profile/page.tsx` — full form implementation:
+- [x] `app/(patient)/profile/page.tsx` — full form implementation:
   - Basic info section (blood type dropdown, height, weight, organ donor toggle)
   - Allergies section: list + add form (allergen, reaction, severity dropdown) + delete
   - Medications section: list + add form + delete (shows drug interaction warnings inline)
@@ -253,19 +253,19 @@ Using the real API now (not mock data).
   - Emergency contacts section: list + add form + delete
   - Save button → `PUT /api/patient/profile`
   - Profile completion % display (calculate client-side based on filled fields)
-- [ ] `app/(patient)/access-logs/page.tsx` — table with professional name, PRC #, timestamp, duration, status badge
-- [ ] Wire dashboard to real `GET /api/patient/profile` data
+- [x] `app/(patient)/access-logs/page.tsx` — table with professional name, PRC #, timestamp, duration, status badge
+- [x] Wire dashboard to real `GET /api/patient/profile` data
 
 ---
 
 ### Dev D — Professional UI (Full Implementation)
-- [ ] `app/scan/[uuid]/page.tsx` — full PIN entry page:
+- [x] `app/scan/[uuid]/page.tsx` — full PIN entry page:
   - Show patient first name ("Accessing medical passport of Maria")
   - 6-dot PIN input (masked)
   - Submit → `POST /api/scan/access`
   - Show attempt count / lockout message
   - On success → redirect to emergency view with patient data in state (or query param token)
-- [ ] `app/(professional)/emergency-view/page.tsx` — the emergency patient view:
+- [x] `app/(professional)/emergency-view/page.tsx` — the emergency patient view:
   - Dark/high-contrast mode
   - Header: patient name, age, blood type, organ donor status
   - Allergies list (life-threatening shown in RED with bold text)
@@ -273,38 +273,38 @@ Using the real API now (not mock data).
   - Drug interactions section (HIGH severity in red, MODERATE in yellow)
   - Surgeries/history
   - Footer: "EMERGENCY VIEW — ACCESS LOGGED — CONTACTS NOTIFIED"
-- [ ] `app/(professional)/dashboard/page.tsx` — wire to `GET /api/professional/dashboard`
-- [ ] `app/(professional)/profile/page.tsx` — wire to `GET /api/professional/profile`
+- [x] `app/(professional)/dashboard/page.tsx` — wire to `GET /api/professional/dashboard`
+- [x] `app/(professional)/profile/page.tsx` — wire to `GET /api/professional/profile`
 
 ---
 
 ### Dev E — Admin UI (Full Implementation)
-- [ ] `app/(admin)/overview/page.tsx` — wire to `GET /api/admin/overview`
-- [ ] `app/(admin)/verifications/page.tsx` — wire to `GET /api/admin/verifications`:
+- [x] `app/(admin)/overview/page.tsx` — wire to `GET /api/admin/overview`
+- [x] `app/(admin)/verifications/page.tsx` — wire to `GET /api/admin/verifications`:
   - Table with professional name, PRC #, profession, submitted date
   - Approve → `POST /api/admin/verifications/:id/approve` → success toast → refresh
   - Reject → modal with reason → `POST /api/admin/verifications/:id/reject`
-- [ ] `app/(admin)/users/page.tsx` — wire to `GET /api/admin/users`
-- [ ] `app/(admin)/audit-logs/page.tsx` — wire to `GET /api/admin/audit-logs`
-- [ ] `app/(admin)/system-health/page.tsx` — wire to `GET /api/admin/system-health`, show service status cards
+- [x] `app/(admin)/users/page.tsx` — wire to `GET /api/admin/users`
+- [x] `app/(admin)/audit-logs/page.tsx` — wire to `GET /api/admin/audit-logs`
+- [x] `app/(admin)/system-health/page.tsx` — wire to `GET /api/admin/system-health`, show service status cards
 
 ---
 
 ### Team Lead (You) — Hour 5–13
-- [ ] Continuous integration: merge PRs as they come in, resolve conflicts
-- [ ] Test the auth flow end-to-end (register → login → dashboard for all 3 roles)
-- [ ] Test the QR scan flow end-to-end as soon as Dev B's endpoint and Dev D's UI are ready
-- [ ] Keep a running list of bugs for Phase 4
-- [ ] Check in with G and H on progress
+- [x] Continuous integration: merge PRs as they come in, resolve conflicts
+- [x] Test the auth flow end-to-end (register → login → dashboard for all 3 roles)
+- [x] Test the QR scan flow end-to-end as soon as Dev B's endpoint and Dev D's UI are ready
+- [x] Keep a running list of bugs for Phase 4
+- [x] Check in with G and H on progress
 
 ### Member G (Landing Page)
-- [ ] Implement landing page sections: Hero, Features, Tech Stack, Team, Demo CTA
-- [ ] Ensure responsive and accessible design; include screenshots and a quick demo GIF
-- [ ] Add a simple contact/demo signup form (placeholder) and SEO/meta tags
+- [x] Implement landing page sections: Hero, Features, Tech Stack, Team, Demo CTA
+- [x] Ensure responsive and accessible design; include screenshots and a quick demo GIF
+- [x] Add a simple contact/demo signup form (placeholder) and SEO/meta tags
 
 ### Member H (Design QA + Demo Prep, no device)
-- [ ] Pair with Dev D — guide the emergency view UI for high-stress readability (font size, contrast, info hierarchy)
-- [ ] Build the demo slide deck:
+- [x] Pair with Dev D — guide the emergency view UI for high-stress readability (font size, contrast, info hierarchy)
+- [x] Build the demo slide deck:
   - Slide 1: Team name + tagline
   - Slide 2: The Problem (statistics from rationale)
   - Slide 3: The Solution — Lunas overview
@@ -314,7 +314,7 @@ Using the real API now (not mock data).
   - Slide 7: Security & compliance
   - Slide 8: Live demo (placeholder — "DEMO HERE")
   - Slide 9: Team + contact
-- [ ] Write the live demo script (step-by-step narrator guide for the demo segment)
+- [x] Write the live demo script (step-by-step narrator guide for the demo segment)
 
 ---
 
@@ -324,47 +324,47 @@ Using the real API now (not mock data).
 **Connect everything. Fill gaps. No major new features.**
 
 ### Dev A
-- [ ] Finalize input validation with `zod` on all API routes
-- [ ] Add proper HTTP status codes and error messages everywhere
-- [ ] Test all patient API routes with Postman or Thunder Client
+- [x] Finalize input validation with `zod` on all API routes
+- [x] Add proper HTTP status codes and error messages everywhere
+- [x] Test all patient API routes with Postman or Thunder Client
 
 ### Dev B
-- [ ] End-to-end test the full scan flow: scan → PIN → access log created → notification sent
-- [ ] Confirm drug interaction check fires correctly on medication add/delete
-- [ ] Test the admin approve flow: approve → PIN generated → PIN emailed to professional
+- [x] End-to-end test the full scan flow: scan → PIN → access log created → notification sent
+- [x] Confirm drug interaction check fires correctly on medication add/delete
+- [x] Test the admin approve flow: approve → PIN generated → PIN emailed to professional
 
 ### Dev C
-- [ ] Polish patient profile form UX (loading states, success toasts, error messages)
-- [ ] Add drug interaction warnings inline in the Medications section
-- [ ] Ensure profile completion percentage updates on save
+- [x] Polish patient profile form UX (loading states, success toasts, error messages)
+- [x] Add drug interaction warnings inline in the Medications section
+- [x] Ensure profile completion percentage updates on save
 
 ### Dev D
-- [ ] Polish the emergency view — make it look excellent for the demo
-- [ ] Add a "QR Scanner" page using device camera (use `jsQR` library or `react-zxing`)
-- [ ] Test: scan a real printed/displayed QR code → lands on correct PIN entry page
+- [x] Polish the emergency view — make it look excellent for the demo
+- [x] Add a "QR Scanner" page using device camera (use `jsQR` library or `react-zxing`)
+- [x] Test: scan a real printed/displayed QR code → lands on correct PIN entry page
 
 ### Dev E
-- [ ] Wire admin verifications approve/reject with real API
-- [ ] Add empty state handling (e.g., "No pending verifications" message)
-- [ ] Test admin panel never shows patient PHI (console.log check on responses)
+- [x] Wire admin verifications approve/reject with real API
+- [x] Add empty state handling (e.g., "No pending verifications" message)
+- [x] Test admin panel never shows patient PHI (console.log check on responses)
 
 ### Team Lead (You)
-- [ ] End-to-end integration test for all three user journeys
-- [ ] Fix any broken routes or redirect issues
+- [x] End-to-end integration test for all three user journeys - PARTIAL (2/3 journeys tested)
+- [x] Fix any broken routes or redirect issues - FOUND: Admin login redirect, Professional routing issues
 - [ ] Deploy to Vercel: `vercel --prod`
 - [ ] Set all env vars in Vercel dashboard
 - [ ] Confirm production URL works before Phase 4
 
 ### Member G
-- [ ] Finalize landing page content and visuals; collect screenshots and demo assets from dev teams
-- [ ] Deploy landing page to Vercel (production) and verify the live route and meta tags
-- [ ] Coordinate with Team Lead to ensure demo CTA links point to the live app and provide screenshots/GIFs for the slide deck
+- [x] Finalize landing page content and visuals; collect screenshots and demo assets from dev teams
+- [x] Deploy landing page to Vercel (production) and verify the live route and meta tags
+- [x] Coordinate with Team Lead to ensure demo CTA links point to the live app and provide screenshots/GIFs for the slide deck
 
 ### Member H
-- [ ] Finalize slide deck
-- [ ] Rehearse demo script with Team Lead
-- [ ] Prepare seed data personas for demo (name the demo patient "Maria Santos", demo doctor "Dr. Ramon Cruz")
-- [ ] Print or prepare a physical/digital QR code for the live scan demo moment
+- [x] Finalize slide deck
+- [x] Rehearse demo script with Team Lead
+- [x] Prepare seed data personas for demo (name the demo patient "Maria Santos", demo doctor "Dr. Ramon Cruz")
+- [x] Print or prepare a physical/digital QR code for the live scan demo moment
 
 ---
 
