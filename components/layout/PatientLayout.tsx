@@ -106,7 +106,7 @@ export function PatientLayout({
             height={40}
             className="rounded-full object-contain"
           />
-          <h1 className="text-2xl font-bold tracking-tight text-white">Lunas</h1>
+          <h1 className="text-2xl font-serif font-bold tracking-tight text-white">Lunas</h1>
         </div>
 
         {/* Main Navigation */}
