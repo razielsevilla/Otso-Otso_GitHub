@@ -3,8 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { PatientLayout } from '@/components/layout/PatientLayout';
 import { Trash2, Plus, ChevronUp, ChevronDown, Save, Loader2, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
-import Link from 'next/link';
-import LunasLoader from '@/components/ui/loader'; //
+import LunasLoader from '@/components/ui/loader';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
@@ -20,7 +19,6 @@ export default function ProfilePage() {
     medications: false,
     surgeries: false,
     contacts: false,
-    notes: false
   });
 
   const showNotification = (type: 'success' | 'error', text: string) => {
@@ -39,7 +37,6 @@ export default function ProfilePage() {
       profile.medications && profile.medications.length > 0,
       profile.surgeries && profile.surgeries.length > 0,
       profile.emergencyContacts && profile.emergencyContacts.length > 0,
-      profile.notes
     ];
     const filled = fields.filter(Boolean).length;
     return Math.round((filled / fields.length) * 100);
@@ -72,7 +69,7 @@ export default function ProfilePage() {
   const addItem = (field: string, defaultValue: object) => {
     setProfile({
       ...profile,
-      [field]: [...(profile[field] || []), defaultValue]
+      [field]: [...(profile[field] || []), { ...defaultValue, tempId: crypto.randomUUID() }]
     });
   };
 
@@ -82,20 +79,27 @@ export default function ProfilePage() {
     setProfile({ ...profile, [field]: newList });
   };
 
-  const deleteItemWithSave = async (field: string, itemId: string, itemName: string) => {
-    const itemKey = `del-${field}-${itemId}`;
+  const handleDeleteItem = async (field: string, index: number) => {
+    const item = profile[field][index];
+    if (!item.id) {
+      const newList = profile[field].filter((_: any, i: number) => i !== index);
+      setProfile({ ...profile, [field]: newList });
+      return;
+    }
+
+    const itemKey = `del-${field}-${item.id}`;
     setOperatingOnItem(itemKey);
     try {
       let endpoint = '';
-      if (field === 'allergies') endpoint = `/api/patient/allergies/${itemId}`;
-      else if (field === 'medications') endpoint = `/api/patient/medications/${itemId}`;
-      else if (field === 'surgeries') endpoint = `/api/patient/surgeries/${itemId}`;
-      else if (field === 'emergencyContacts') endpoint = `/api/patient/emergency-contacts/${itemId}`;
+      if (field === 'allergies') endpoint = `/api/patient/allergies/${item.id}`;
+      else if (field === 'medications') endpoint = `/api/patient/medications/${item.id}`;
+      else if (field === 'surgeries') endpoint = `/api/patient/surgeries/${item.id}`;
+      else if (field === 'emergencyContacts') endpoint = `/api/patient/emergency-contacts/${item.id}`;
 
       const res = await fetch(endpoint, { method: 'DELETE' });
 
       if (res.ok) {
-        const updatedList = profile[field].filter((i: any) => i.id !== itemId);
+        const updatedList = profile[field].filter((i: any) => i.id !== item.id);
         setProfile({ ...profile, [field]: updatedList });
         showNotification('success', `Item removed successfully`);
         
@@ -122,6 +126,7 @@ export default function ProfilePage() {
     const errors: string[] = [];
 
     try {
+      // 1. Update Basic Profile
       const basicRes = await fetch('/api/patient/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -130,13 +135,11 @@ export default function ProfilePage() {
           heightCm: profile.heightCm?.toString(),
           weightKg: profile.weightKg?.toString(),
           isOrganDonor: profile.isOrganDonor,
-          notes: profile.notes,
         }),
       });
 
       if (!basicRes.ok) errors.push("Failed to update basic profile");
 
-      // Handle Collections (Allergies, Meds, etc.)
       const collections = [
         { field: 'allergies', endpoint: '/api/patient/allergies' },
         { field: 'medications', endpoint: '/api/patient/medications' },
@@ -144,23 +147,30 @@ export default function ProfilePage() {
         { field: 'emergencyContacts', endpoint: '/api/patient/emergency-contacts' }
       ];
 
+      // 2. Handle Additions (POST) and Updates (PUT)
       for (const col of collections) {
-        // Add New
         for (const item of profile[col.field] || []) {
           if (!item.id) {
+            // New items: POST
             const res = await fetch(col.endpoint, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(item),
             });
             if (!res.ok) errors.push(`Failed to add item to ${col.field}`);
-          }
-        }
-        // Delete Removed
-        for (const orig of originalProfile[col.field] || []) {
-          if (orig.id && !profile[col.field]?.find((i: any) => i.id === orig.id)) {
-            const res = await fetch(`${col.endpoint}/${orig.id}`, { method: 'DELETE' });
-            if (!res.ok) errors.push(`Failed to delete item from ${col.field}`);
+          } else {
+            // Existing items: Compare with original and PUT if changed
+            const originalItem = originalProfile[col.field]?.find((i: any) => i.id === item.id);
+            const hasChanged = JSON.stringify(item) !== JSON.stringify(originalItem);
+
+            if (hasChanged) {
+              const res = await fetch(`${col.endpoint}/${item.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(item),
+              });
+              if (!res.ok) errors.push(`Failed to update item in ${col.field}`);
+            }
           }
         }
       }
@@ -183,7 +193,6 @@ export default function ProfilePage() {
     }
   }, [profile, originalProfile]);
 
-  // Use LunasLoader for initial data fetching
   if (isLoading) {
     return (
       <PatientLayout activePath="/patient/profile">
@@ -198,7 +207,6 @@ export default function ProfilePage() {
     <PatientLayout activePath="/patient/profile">
       <div className="mx-auto max-w-5xl space-y-8 pb-20 px-4">
         
-        {/* Notification Banner */}
         {notification && (
           <div className={`fixed top-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-2xl px-6 py-4 shadow-2xl animate-in fade-in slide-in-from-top-4 ${
             notification.type === 'success' ? 'bg-[#1a1c1e] text-white' : 'bg-red-600 text-white'
@@ -313,10 +321,9 @@ export default function ProfilePage() {
             {!collapsedSections.allergies && (
               <div className="mt-8 space-y-4 animate-in fade-in duration-300">
                 {profile.allergies?.map((allergy: any, index: number) => {
-                  const itemKey = allergy.id ? `allergy-${allergy.id}` : `temp-allergy-${index}`;
-                  const isOperating = operatingOnItem === itemKey;
+                  const isOperating = operatingOnItem === `del-allergies-${allergy.id}`;
                   return (
-                    <div key={index} className="space-y-4 rounded-[1.5rem] border border-neutral-100 bg-[#fbf8f2]/50 p-5">
+                    <div key={allergy.id || allergy.tempId || index} className="space-y-4 rounded-[1.5rem] border border-neutral-100 bg-[#fbf8f2]/50 p-5">
                       <div className="flex flex-wrap items-end gap-4">
                         <div className="min-w-[200px] flex-1 space-y-2">
                           <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">Allergen</label>
@@ -341,8 +348,8 @@ export default function ProfilePage() {
                           </select>
                         </div>
                         <button 
-                          onClick={() => allergy.id && deleteItemWithSave('allergies', allergy.id, allergy.allergen)}
-                          disabled={isOperating || !allergy.id}
+                          onClick={() => handleDeleteItem('allergies', index)}
+                          disabled={isOperating}
                           className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-400 hover:text-red-500 transition-colors disabled:opacity-50"
                         >
                           {isOperating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
@@ -407,13 +414,12 @@ export default function ProfilePage() {
                 )}
 
                 {profile.medications?.map((med: any, index: number) => {
-                  const itemKey = med.id ? `med-${med.id}` : `temp-med-${index}`;
-                  const isOperating = operatingOnItem === itemKey;
+                  const isOperating = operatingOnItem === `del-medications-${med.id}`;
                   return (
-                    <div key={index} className="space-y-4 rounded-[1.5rem] border border-neutral-100 bg-[#fbf8f2]/50 p-5">
+                    <div key={med.id || med.tempId || index} className="space-y-4 rounded-[1.5rem] border border-neutral-100 bg-[#fbf8f2]/50 p-5">
                       <div className="flex flex-wrap items-end gap-4">
                         <div className="min-w-[200px] flex-1 space-y-2">
-                          <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">Medication</label>
+                          <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">Medication Name</label>
                           <input 
                             type="text" 
                             value={med.name || ''} 
@@ -421,7 +427,7 @@ export default function ProfilePage() {
                             className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none" 
                           />
                         </div>
-                        <div className="min-w-[200px] flex-1 space-y-2">
+                        <div className="min-w-[150px] space-y-2">
                           <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">Dosage</label>
                           <input 
                             type="text" 
@@ -431,12 +437,44 @@ export default function ProfilePage() {
                           />
                         </div>
                         <button 
-                          onClick={() => med.id && deleteItemWithSave('medications', med.id, med.name)}
-                          disabled={isOperating || !med.id}
+                          onClick={() => handleDeleteItem('medications', index)}
+                          disabled={isOperating}
                           className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-400 hover:text-red-500 disabled:opacity-50"
                         >
                           {isOperating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                         </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <div className="space-y-2">
+                          <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">Frequency</label>
+                          <input 
+                            type="text" 
+                            placeholder="e.g. Twice a day"
+                            value={med.frequency || ''} 
+                            onChange={(e) => updateListItem('medications', index, 'frequency', e.target.value)}
+                            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">Prescribed For</label>
+                          <input 
+                            type="text" 
+                            placeholder="Condition"
+                            value={med.prescribedFor || ''} 
+                            onChange={(e) => updateListItem('medications', index, 'prescribedFor', e.target.value)}
+                            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">rxNorm Code</label>
+                          <input 
+                            type="text" 
+                            value={med.rxNormCode || ''} 
+                            onChange={(e) => updateListItem('medications', index, 'rxNormCode', e.target.value)}
+                            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none" 
+                          />
+                        </div>
                       </div>
                     </div>
                   );
@@ -460,10 +498,9 @@ export default function ProfilePage() {
             {!collapsedSections.surgeries && (
               <div className="mt-8 space-y-4 animate-in fade-in duration-300">
                 {profile.surgeries?.map((surgery: any, index: number) => {
-                  const itemKey = surgery.id ? `surgery-${surgery.id}` : `temp-surgery-${index}`;
-                  const isOperating = operatingOnItem === itemKey;
+                  const isOperating = operatingOnItem === `del-surgeries-${surgery.id}`;
                   return (
-                    <div key={index} className="space-y-4 rounded-[1.5rem] border border-neutral-100 bg-[#fbf8f2]/50 p-5">
+                    <div key={surgery.id || surgery.tempId || index} className="space-y-4 rounded-[1.5rem] border border-neutral-100 bg-[#fbf8f2]/50 p-5">
                       <div className="flex flex-wrap items-end gap-4">
                         <div className="min-w-[200px] flex-1 space-y-2">
                           <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">Procedure</label>
@@ -484,8 +521,8 @@ export default function ProfilePage() {
                           />
                         </div>
                         <button 
-                          onClick={() => surgery.id && deleteItemWithSave('surgeries', surgery.id, surgery.procedure)}
-                          disabled={isOperating || !surgery.id}
+                          onClick={() => handleDeleteItem('surgeries', index)}
+                          disabled={isOperating}
                           className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-400 hover:text-red-500 transition-colors disabled:opacity-50"
                         >
                           {isOperating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
@@ -530,10 +567,9 @@ export default function ProfilePage() {
             {!collapsedSections.contacts && (
               <div className="mt-8 space-y-4 animate-in fade-in duration-300">
                 {profile.emergencyContacts?.map((contact: any, index: number) => {
-                  const itemKey = contact.id ? `contact-${contact.id}` : `temp-contact-${index}`;
-                  const isOperating = operatingOnItem === itemKey;
+                  const isOperating = operatingOnItem === `del-emergencyContacts-${contact.id}`;
                   return (
-                    <div key={index} className="space-y-4 rounded-[1.5rem] border border-neutral-100 bg-[#fbf8f2]/50 p-5">
+                    <div key={contact.id || contact.tempId || index} className="space-y-4 rounded-[1.5rem] border border-neutral-100 bg-[#fbf8f2]/50 p-5">
                       <div className="flex flex-wrap items-end gap-4">
                         <div className="min-w-[200px] flex-1 space-y-2">
                           <label className="text-[9px] font-bold uppercase tracking-widest text-[#8d8374]">Name</label>
@@ -554,8 +590,8 @@ export default function ProfilePage() {
                           />
                         </div>
                         <button 
-                          onClick={() => contact.id && deleteItemWithSave('emergencyContacts', contact.id, contact.name)}
-                          disabled={isOperating || !contact.id}
+                          onClick={() => handleDeleteItem('emergencyContacts', index)}
+                          disabled={isOperating}
                           className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-400 hover:text-red-500 transition-colors disabled:opacity-50"
                         >
                           {isOperating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
@@ -591,24 +627,6 @@ export default function ProfilePage() {
                 >
                   <Plus className="h-4 w-4" /> Add Another Contact
                 </button>
-              </div>
-            )}
-          </div>
-
-          {/* Additional Notes */}
-          <div className="rounded-[2.5rem] border border-neutral-200 bg-white p-8 shadow-sm">
-            <button onClick={() => toggleSection('notes')} className="flex w-full items-center justify-between border-b border-neutral-100 pb-6 outline-none">
-              <h2 className="text-xl font-bold text-[#1a1c1e]">Additional Notes</h2>
-              {collapsedSections.notes ? <ChevronDown className="h-5 w-5 text-[#8d8374]" /> : <ChevronUp className="h-5 w-5 text-[#8d8374]" />}
-            </button>
-            {!collapsedSections.notes && (
-              <div className="mt-8 animate-in fade-in duration-300">
-                <textarea
-                  placeholder="Anything else first responders should know..."
-                  value={profile.notes || ''}
-                  onChange={(e) => setProfile({...profile, notes: e.target.value})}
-                  className="min-h-[120px] w-full rounded-2xl border border-neutral-200 bg-[#fbf8f2]/50 p-6 text-sm outline-none focus:ring-2 focus:ring-[#1a1c1e]/5"
-                />
               </div>
             )}
           </div>
