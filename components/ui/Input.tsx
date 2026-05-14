@@ -16,6 +16,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
       type={type}
       className={cn(
         'h-11 w-full rounded-2xl border border-neutral-200 bg-white px-4 text-sm text-[#1a1c1e] outline-none transition-colors placeholder:text-neutral-400 focus:border-[#c8c0b2] focus:ring-2 focus:ring-[#1a1c1e]/5',
+        type === 'password' && '[&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden',
         className,
       )}
       {...props}

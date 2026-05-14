@@ -56,21 +56,6 @@ export default function ProfessionalDashboard() {
 
       {/* 3. Primary Action & Patient Logs (Lower Split Section) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        {/* Scanner Quick-Access (Left - 5 Cols) */}
-        <div className="lg:col-span-5 bg-white rounded-[40px] p-10 border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col justify-between min-h-[400px]">
-          <div>
-            <h2 className="text-3xl font-serif font-bold text-slate-900 mb-4">Scan a patient passport</h2>
-            <p className="text-slate-500 font-sans leading-relaxed text-lg">
-              Open the secure viewfinder to scan a patient's Lunas QR code and request emergency access to their medical records.
-            </p>
-          </div>
-          
-          <button className="mt-8 w-full bg-[#0F172A] hover:bg-slate-800 text-white rounded-2xl py-5 px-6 flex items-center justify-center space-x-3 transition-all transform active:scale-[0.98]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-80"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect width="7" height="7" x="8.5" y="8.5" rx="1"/></svg>
-            <span className="font-sans font-bold text-lg tracking-wide uppercase">Open Scanner</span>
-          </button>
-        </div>
 
         {/* Recent Patients Feed (Right - 7 Cols) */}
         <div className="lg:col-span-7 bg-white rounded-[40px] p-10 border border-slate-100 shadow-xl shadow-slate-200/50">

@@ -18,11 +18,11 @@ const steps = [
     icon: UserPlus,
     title: "Build your profile",
     subtitle: "Guided medical record builder",
-    description: "Our guided onboarding process takes the complexity out of medical history. We walk you through every critical detail—from allergies to blood types—ensuring your profile is comprehensive, accurate, and military-grade encrypted.",
+    description: "Create your secure medical passport in minutes. Our guided process walks you through allergies, medications, blood type, surgeries, and emergency contacts. Everything is encrypted with military-grade AES-256 security before it ever leaves your device.",
     capabilities: [
       "AES-256 encrypted storage",
       "Guided health history survey",
-      "Medical document uploads"
+      "Complete medical profile"
     ],
     accent: "Setup"
   },
@@ -31,11 +31,11 @@ const steps = [
     icon: QrCode,
     title: "Carry your passport",
     subtitle: "Digital and physical formats",
-    description: "Your Lunas passport is built for ultimate accessibility. Whether you prefer a digital-first approach with Apple Wallet, or a fail-safe physical backup like a laminated ID card, your life-saving information is always within reach.",
+    description: "Your Lunas passport is a permanent, non-expiring QR code. Print it, add it to your wallet, or keep it digital. The QR contains only a UUID—your actual medical data stays encrypted and secure. Your code never changes, even when you update your profile.",
     capabilities: [
-      "Apple & Google Wallet support",
-      "High-res printable PDF export",
-      "Permanent UUID assignment"
+      "Permanent QR UUID",
+      "Printable ID card format",
+      "Always-current data behind the code"
     ],
     accent: "Carry"
   },
@@ -44,11 +44,11 @@ const steps = [
     icon: ShieldCheck,
     title: "Stay protected",
     subtitle: "Life-saving context in seconds",
-    description: "The moment a verified medical professional scans your code, you are no longer just a patient—you are a person with a history. Responders gain instant access to the context they need to make safe, informed decisions.",
+    description: "When a verified medical professional scans your QR code, they instantly see your complete medical context: critical allergies, medications, blood type, conditions, and surgical history. Your emergency contacts are notified immediately, and every access is logged for your protection.",
     capabilities: [
       "PRC-verified professional access",
-      "Real-time scan notifications",
-      "Family emergency alerts"
+      "Real-time emergency contact alerts",
+      "Complete audit trail of all access"
     ],
     accent: "Protect"
   }
@@ -116,22 +116,22 @@ export function HowItWorks() {
   }, [activeTab]);
 
   return (
-    <section ref={sectionRef} id="how" className="relative bg-ivory py-32 overflow-hidden text-night">
+    <section ref={sectionRef} id="how" className="relative bg-ivory py-20 md:py-32 overflow-hidden text-night">
       {/* Background elements */}
       <div className="pointer-events-none absolute -top-40 left-1/4 h-96 w-96 rounded-full bg-golden/[0.04] blur-[120px]" />
       <div className="pointer-events-none absolute -bottom-20 right-1/4 h-80 w-80 rounded-full bg-amber-glow/[0.04] blur-[100px]" />
 
       <div className="mx-auto max-w-6xl px-6">
-        <div className="grid gap-16 lg:grid-cols-[1fr_1.2fr]">
+        <div className="grid gap-12 md:gap-20 lg:grid-cols-[1fr_1.2fr]">
 
           {/* Left Column - Navigation */}
           <div className="flex flex-col justify-center">
             <div className="how-reveal-header mb-12">
-              <h2 className="font-display text-5xl font-bold tracking-tighter sm:text-6xl text-night">
+              <h2 className="font-display text-5xl font-bold tracking-tighter md:text-6xl lg:text-7xl text-night">
                 How it works.
               </h2>
               <p className="mt-6 max-w-md text-lg text-muted-foreground leading-relaxed">
-                From sign-up to life-saving scan — Lunas is designed to be effortless for you and instant for the people who help you.
+                From sign-up to life-saving scan — Lunas is designed to be effortless for you and instant for responders.
               </p>
             </div>
 
@@ -141,21 +141,22 @@ export function HowItWorks() {
                   <button
                     type="button"
                     onClick={() => setActiveTab(index)}
-                    className={`group relative z-20 w-full rounded-3xl border p-7 text-left transition-all duration-700 cursor-pointer ${activeTab === index
+                    suppressHydrationWarning
+                    className={`group relative z-20 w-full rounded-2xl border p-6 text-left transition-all duration-700 cursor-pointer ${activeTab === index
                       ? "bg-white border-golden/40 shadow-soft-xl scale-[1.02] ring-1 ring-golden/10"
                       : "bg-transparent border-border hover:border-golden/30 hover:bg-white/60 hover:shadow-soft"
                       }`}
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className={`font-display text-xl font-semibold tracking-tight transition-colors ${activeTab === index ? "text-night" : "text-night/50 group-hover:text-night"}`}>
+                        <h3 className={`font-display text-lg font-semibold tracking-tight transition-colors ${activeTab === index ? "text-night" : "text-night/50 group-hover:text-night"}`}>
                           {step.title}
                         </h3>
                         <p className={`mt-1 text-sm transition-colors ${activeTab === index ? "text-muted-foreground" : "text-muted-foreground/40 group-hover:text-muted-foreground/60"}`}>
                           {step.subtitle}
                         </p>
                       </div>
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-500 ${activeTab === index
+                      <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border transition-all duration-500 ${activeTab === index
                         ? "bg-night border-night text-white shadow-glow-sm"
                         : "bg-white border-border text-night/30 group-hover:border-golden/30 group-hover:text-night"
                         }`}>
@@ -172,7 +173,7 @@ export function HowItWorks() {
           <div className="how-preview-anim relative flex">
             <div
               ref={previewRef}
-              className="relative flex w-full flex-col rounded-[2.5rem] border border-border/40 bg-white/80 p-8 backdrop-blur-md shadow-soft-2xl overflow-hidden h-full"
+              className="relative flex w-full flex-col rounded-[2.5rem] border border-border/40 bg-white/80 p-8 md:p-10 backdrop-blur-md shadow-soft-2xl overflow-hidden h-full"
             >
               {/* Decorative elements in preview */}
               <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-golden/5 blur-3xl" />

@@ -33,9 +33,9 @@ const faqs = [
 
 const testimonials = [
   {
-    text: "Knowing my elderly father has his Lunas card in his wallet gives our entire family peace of mind. It's the most essential 'insurance' we've ever had.",
-    author: "Ray Fernando",
-    role: "Family Caregiver",
+    text: "The peace of mind knowing that emergency responders have Maria's complete medical history instantly—no miscommunication, no delays. It's literally a lifesaver.",
+    author: "Andres Santos",
+    role: "Emergency Contact & Spouse",
   },
 ];
 
@@ -73,21 +73,21 @@ export function FAQTestimonials() {
   };
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-ivory py-32 text-night">
+    <section ref={sectionRef} className="relative overflow-hidden bg-ivory py-20 md:py-32 text-night">
       {/* Decorative background effects matching the light theme */}
       <div className="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-golden/[0.05] blur-[120px]" />
       <div className="pointer-events-none absolute -bottom-20 left-1/4 h-80 w-80 rounded-full bg-amber-glow/[0.05] blur-[100px]" />
 
       <div className="relative mx-auto max-w-6xl px-6">
         {/* Top Header Row */}
-        <div className="mb-10 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
+        <div className="mb-12 flex flex-col items-start justify-between gap-6 md:mb-16 md:flex-row md:items-end">
           <div className="reveal-item max-w-2xl">
-            <h2 className="font-display text-4xl font-bold tracking-tighter md:text-6xl text-balance">
+            <h2 className="font-display text-4xl font-bold tracking-tighter md:text-6xl lg:text-7xl text-balance">
               Answers to your most <br />
               <span className="text-golden italic">common questions</span>
             </h2>
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed text-balance">
-              Everything you need to know to get started, manage your account, and get support quickly.
+              Everything you need to know to get started and get support quickly.
             </p>
           </div>
           <Link href="/contact" className="reveal-item">
@@ -97,7 +97,7 @@ export function FAQTestimonials() {
           </Link>
         </div>
 
-        <div className="grid gap-20 lg:grid-cols-[1.1fr_0.9fr] items-start">
+        <div className="grid gap-12 md:gap-16 lg:grid-cols-[1.1fr_0.9fr] items-start">
           {/* Left Column - FAQ Accordion */}
           <div className="space-y-4">
             {faqs.map((faq, index) => (
@@ -135,7 +135,7 @@ export function FAQTestimonials() {
           </div>
 
           {/* Right Column - Testimonials */}
-          <div className="space-y-12">
+          <div className="space-y-8 md:space-y-12">
             <div className="reveal-item space-y-6">
               <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-white px-4 py-1.5 shadow-soft">
                 <div className="h-1.5 w-1.5 rounded-full bg-golden shadow-glow-sm" />
@@ -143,11 +143,11 @@ export function FAQTestimonials() {
               </div>
 
               <h2 className="font-display text-4xl font-bold tracking-tighter md:text-5xl text-balance text-night">
-                Loved by builders, <br />
-                <span className="text-muted-foreground/40 italic">easy turnarounds</span>
+                Trusted by patients <br />
+                <span className="text-muted-foreground/40 italic">& their families</span>
               </h2>
               <p className="text-lg text-muted-foreground/60 leading-relaxed text-balance">
-                Real results from real teams — faster reviews, cleaner handoff, and a smoother path from idea to shipped UI.
+                Real protection for real emergencies — when seconds count, Lunas delivers the medical context that saves lives.
               </p>
             </div>
 
