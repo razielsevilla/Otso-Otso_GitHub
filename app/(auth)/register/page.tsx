@@ -265,7 +265,7 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
             }}
           />
           
-          <div className="relative z-10">
+          <div className="relative z-10 flex flex-col items-center">
             <div className="bg-white/10 p-4 rounded-2xl inline-block mb-8 backdrop-blur-sm border border-white/10">
               <Stethoscope size={32} className="text-white" />
             </div>
@@ -275,6 +275,15 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
             <p className="text-slate-300 text-lg leading-relaxed max-w-sm mx-auto">
               A secure medical passport for patients and the professionals who care for them.
             </p>
+            {onSwitchToLogin && (
+              <button 
+                type="button"
+                onClick={onSwitchToLogin}
+                className="mt-10 rounded-full border border-white/20 bg-white/5 px-8 py-3 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/10"
+              >
+                Sign In
+              </button>
+            )}
           </div>
         </div>
 
@@ -327,21 +336,6 @@ function RegisterPageComponent({ onSwitchToLogin }: { onSwitchToLogin?: () => vo
               </Link>
             </div>
           </div>
-          
-          {/* Sign In Button */}
-          {onSwitchToLogin && (
-            <div className="pt-8 border-t border-slate-200">
-              <p className="text-center text-sm font-medium text-slate-500 mb-4">
-                Already have an account?
-              </p>
-              <button 
-                onClick={onSwitchToLogin}
-                className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-8 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-slate-100"
-              >
-                Sign In
-              </button>
-            </div>
-          )}
         </div>
       </div>
     );
