@@ -102,11 +102,6 @@ export default function PatientAccessLogsPage() {
         render: (row) => <span>{formatDateTime(row.accessedAt)}</span>,
       },
       {
-        key: 'durationSeconds',
-        label: 'Duration',
-        render: (row) => <span>{row.durationSeconds ? `${row.durationSeconds}s` : 'N/A'}</span>,
-      },
-      {
         key: 'status',
         label: 'Status',
         render: (row) => <Badge variant={badgeVariantForStatus(row.status)}>{row.status}</Badge>,

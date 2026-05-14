@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { Download, Printer, RefreshCcw } from 'lucide-react';
+import { Download, Printer } from 'lucide-react';
 
 import { PatientLayout } from '@/components/layout/PatientLayout';
 import { Badge } from '@/components/ui/Badge';
@@ -71,29 +71,6 @@ export default function PatientQrCodePage() {
 
   const printQrCode = () => window.print();
 
-  const refreshQrCode = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch('/api/patient/qr', { cache: 'no-store' });
-      const data = (await response.json()) as Partial<QrResponse> & { error?: string };
-      if (!response.ok) {
-        throw new Error(data.error || 'Unable to load QR code.');
-      }
-
-      setQrCode({ 
-        qrUuid: data.qrUuid ?? '', 
-        qrImageBase64: data.qrImageBase64 ?? '',
-        firstName: data.firstName ?? '',
-        lastName: data.lastName ?? '',
-      });
-    } catch (refreshError: any) {
-      setError(refreshError.message || 'Unable to load QR code.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // 1. Full Page Loading State (Outside the Card)
   if (isLoading) {
     return (
@@ -124,7 +101,7 @@ export default function PatientQrCodePage() {
           <CardContent>
             {isLoading ? (
               <div className="flex min-h-[24rem] items-center justify-center">
-                <Spinner size="lg" label="Loading QR code" />
+                <LunasLoader />
               </div>
             ) : error ? (
               <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
@@ -183,20 +160,13 @@ export default function PatientQrCodePage() {
                     >
                       <Printer className="mr-2 h-4 w-4" /> Print Passport
                     </Button>
-                    <Button 
-                      variant="secondary" 
-                      className="w-full h-12 rounded-xl" 
-                      onClick={refreshQrCode}
-                    >
-                      <RefreshCcw className="mr-2 h-4 w-4" /> Refresh Code
-                    </Button>
                   </div>
                 </div>
               </div>
+            ) : null}
             </CardContent>
           </Card>
-        ) : null}
-      </div>
-    </PatientLayout>
-  );
+        </div>
+      </PatientLayout>
+    );
 }
