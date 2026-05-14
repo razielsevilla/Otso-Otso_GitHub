@@ -33,6 +33,49 @@ function formatTimestamp(iso: string): string {
   return d.toISOString().replace('T', ' ').slice(0, 19);
 }
 
+/**
+ * Formats an audit event into human-readable text with event type and key metadata.
+ * Hides technical IDs and shows only relevant context.
+ */
+function formatAuditEvent(eventType: string, metadata: Record<string, unknown> | null): string {
+  const eventDescriptions: Record<string, string> = {
+    PROFESSIONAL_APPROVED: 'Professional Approved',
+    PROFESSIONAL_REJECTED: 'Professional Rejected',
+    PRC_REVALIDATION: 'PRC License Revalidated',
+    FAILED_PIN_LOCKOUT: 'Failed PIN Lockout',
+    QR_ACCESS_SUCCESS: 'QR Access Granted',
+    QR_ACCESS_DENIED: 'QR Access Denied',
+    PIN_CHANGED: 'PIN Changed',
+    USER_SUSPENDED: 'User Suspended',
+    ADMIN_LOGIN: 'Admin Login',
+  };
+
+  const baseDescription = eventDescriptions[eventType] || eventType;
+
+  if (!metadata) return baseDescription;
+
+  // Format relevant metadata based on event type
+  const parts: string[] = [];
+
+  if (metadata.prcNumber) {
+    parts.push(`PRC: ${metadata.prcNumber}`);
+  }
+
+  if (metadata.reason) {
+    parts.push(`Reason: ${metadata.reason}`);
+  }
+
+  if (metadata.status) {
+    parts.push(`Status: ${metadata.status}`);
+  }
+
+  if (metadata.ipHash && eventType.includes('LOGIN')) {
+    parts.push(`IP: ${String(metadata.ipHash).substring(0, 8)}...`);
+  }
+
+  return parts.length > 0 ? `${baseDescription} (${parts.join(', ')})` : baseDescription;
+}
+
 function formatMetadata(meta: Record<string, unknown> | null): string {
   if (!meta) return '';
   return Object.entries(meta)
@@ -119,23 +162,28 @@ export default function AuditLogsPage() {
         {!loading && logs.length > 0 && (
           <>
             <div className="flex flex-col gap-3">
-              {logs.map((log) => (
-                <div
-                  key={log.id}
-                  className="flex w-full items-center rounded-full border border-neutral-100 bg-white px-6 py-4 shadow-sm transition-shadow hover:shadow-md"
-                >
-                  {/* Monospace Records & Visual Muting */}
-                  <p className="truncate font-mono text-[14px] text-[#64748b]">
-                    <span className="mr-6 inline-block w-[160px]">{formatTimestamp(log.createdAt)}</span>
-                    <span className="mr-6 inline-block w-[150px] font-medium text-[#0C0E14]">{log.eventType}</span>
-                    <span className="tracking-tight">
-                      actor={log.actorId}
-                      {log.targetId && ` target=${log.targetId}`}
-                      {log.metadata && ` ${formatMetadata(log.metadata)}`}
+              {logs.map((log) => {
+                const readableEvent = formatAuditEvent(log.eventType, log.metadata);
+                return (
+                  <div
+                    key={log.id}
+                    className="flex w-full items-center justify-between rounded-full border border-neutral-100 bg-white px-6 py-4 shadow-sm transition-shadow hover:shadow-md"
+                  >
+                    <div className="flex flex-1 items-center gap-6">
+                      <span className="w-[160px] flex-shrink-0 font-mono text-[12px] text-[#64748b]">
+                        {formatTimestamp(log.createdAt)}
+                      </span>
+                      <span className="flex-1 font-sans text-sm font-medium text-[#0C0E14]">
+                        {readableEvent}
+                      </span>
+                    </div>
+                    <span className="flex-shrink-0 text-right font-mono text-[11px] text-[#8E919A]">
+                      {log.actorId.substring(0, 8)}...
+                      {log.targetId && <span className="ml-3">{log.targetId.substring(0, 8)}...</span>}
                     </span>
-                  </p>
-                </div>
-              ))}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Pagination */}

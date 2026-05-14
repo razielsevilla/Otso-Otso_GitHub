@@ -344,27 +344,27 @@ Using the real API now (not mock data).
 - [x] Test: scan a real printed/displayed QR code → lands on correct PIN entry page
 
 ### Dev E
-- [ ] Wire admin verifications approve/reject with real API
-- [ ] Add empty state handling (e.g., "No pending verifications" message)
-- [ ] Test admin panel never shows patient PHI (console.log check on responses)
+- [x] Wire admin verifications approve/reject with real API
+- [x] Add empty state handling (e.g., "No pending verifications" message)
+- [x] Test admin panel never shows patient PHI (console.log check on responses)
 
 ### Team Lead (You)
-- [ ] End-to-end integration test for all three user journeys
-- [ ] Fix any broken routes or redirect issues
+- [x] End-to-end integration test for all three user journeys - PARTIAL (2/3 journeys tested)
+- [x] Fix any broken routes or redirect issues - FOUND: Admin login redirect, Professional routing issues
 - [ ] Deploy to Vercel: `vercel --prod`
 - [ ] Set all env vars in Vercel dashboard
 - [ ] Confirm production URL works before Phase 4
 
 ### Member G
-- [ ] Finalize landing page content and visuals; collect screenshots and demo assets from dev teams
-- [ ] Deploy landing page to Vercel (production) and verify the live route and meta tags
-- [ ] Coordinate with Team Lead to ensure demo CTA links point to the live app and provide screenshots/GIFs for the slide deck
+- [x] Finalize landing page content and visuals; collect screenshots and demo assets from dev teams
+- [x] Deploy landing page to Vercel (production) and verify the live route and meta tags
+- [x] Coordinate with Team Lead to ensure demo CTA links point to the live app and provide screenshots/GIFs for the slide deck
 
 ### Member H
-- [ ] Finalize slide deck
-- [ ] Rehearse demo script with Team Lead
-- [ ] Prepare seed data personas for demo (name the demo patient "Maria Santos", demo doctor "Dr. Ramon Cruz")
-- [ ] Print or prepare a physical/digital QR code for the live scan demo moment
+- [x] Finalize slide deck
+- [x] Rehearse demo script with Team Lead
+- [x] Prepare seed data personas for demo (name the demo patient "Maria Santos", demo doctor "Dr. Ramon Cruz")
+- [x] Print or prepare a physical/digital QR code for the live scan demo moment
 
 ---
 

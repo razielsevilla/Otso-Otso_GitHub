@@ -3,13 +3,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { PatientLayout } from '@/components/layout/PatientLayout';
-import { CheckCircle2, Download, Printer, ArrowRight, Clock, AlertCircle } from 'lucide-react';
+import { Download, Printer, ArrowRight, Clock, AlertCircle } from 'lucide-react';
 import LunasLoader from '@/components/ui/loader';
 
 type AuthMeResponse = {
     firstName: string;
     lastName: string;
     role: string;
+    dateOfBirth?: string;
 };
 
 type AccessLog = {
@@ -21,6 +22,13 @@ type AccessLog = {
         prcNumber: string;
         profession: string;
     };
+};
+
+type QrResponse = {
+    qrUuid: string;
+    qrImageBase64: string;
+    firstName: string;
+    lastName: string;
 };
 
 function getInitials(name: string) {
@@ -48,6 +56,8 @@ export default function DashboardPage() {
 
     // Profile data for dynamic completion calculation
     const [profileData, setProfileData] = useState<any>(null);
+    const [qrCode, setQrCode] = useState<QrResponse | null>(null);
+    const [userAge, setUserAge] = useState<number | null>(null);
 
     const calculateCompletion = useCallback(() => {
         if (!profileData) return 0;
@@ -60,7 +70,6 @@ export default function DashboardPage() {
             profileData.medications && profileData.medications.length > 0,
             profileData.surgeries && profileData.surgeries.length > 0,
             profileData.emergencyContacts && profileData.emergencyContacts.length > 0,
-            profileData.notes
         ];
         const filled = fields.filter(Boolean).length;
         return Math.round((filled / fields.length) * 100);
@@ -78,11 +87,12 @@ export default function DashboardPage() {
 
         const loadDashboardData = async () => {
             try {
-                // Fetch User, Logs, and Profile in parallel
-                const [authRes, logsRes, profileRes] = await Promise.all([
+                // Fetch User, Logs, Profile, and QR in parallel
+                const [authRes, logsRes, profileRes, qrRes] = await Promise.all([
                     fetch('/api/auth/me', { cache: 'no-store' }),
                     fetch('/api/patient/access-logs'),
-                    fetch('/api/patient/profile')
+                    fetch('/api/patient/profile'),
+                    fetch('/api/patient/qr', { cache: 'no-store' })
                 ]);
 
                 if (cancelled) return;
@@ -108,6 +118,19 @@ export default function DashboardPage() {
                 if (profileRes.ok) {
                     const data = await profileRes.json();
                     setProfileData(data);
+                }
+
+                // Handle QR Code
+                if (qrRes.ok) {
+                    const data = (await qrRes.json()) as Partial<QrResponse> & { error?: string };
+                    if (!data.error) {
+                        setQrCode({
+                            qrUuid: data.qrUuid ?? '',
+                            qrImageBase64: data.qrImageBase64 ?? '',
+                            firstName: data.firstName ?? '',
+                            lastName: data.lastName ?? ''
+                        });
+                    }
                 }
 
             } catch (err) {
@@ -141,6 +164,16 @@ export default function DashboardPage() {
     const latestThree = logs.slice(0, 3);
     const veryRecent = logs[0] || null;
 
+    const downloadQrCode = () => {
+        if (!qrCode?.qrImageBase64) return;
+        const link = document.createElement('a');
+        link.href = qrCode.qrImageBase64;
+        link.download = 'lunas-qr-code.png';
+        link.click();
+    };
+
+    const printQrCode = () => window.print();
+
     return (
         <PatientLayout
             activePath="/patient/dashboard"
@@ -154,12 +187,6 @@ export default function DashboardPage() {
                 </div>
             ) : (
                 <div className="space-y-10 animate-in fade-in duration-700">
-                    {/* Status Banner */}
-                    <div className="flex items-center gap-3 rounded-2xl border border-[#d1e7dd] bg-[#f2f9f6] px-6 py-4 text-[#0f5132] shadow-sm">
-                        <CheckCircle2 className="h-5 w-5 text-[#198754]" />
-                        <span className="text-sm font-medium">Your medical passport is active and ready.</span>
-                    </div>
-
                     {/* Header Section */}
                     <div>
                         <h1 className="text-4xl font-bold tracking-tight text-[#1a1c1e]">
@@ -172,8 +199,18 @@ export default function DashboardPage() {
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                         {/* Updated Profile Completion Card */}
                         <div className="rounded-[2rem] border border-neutral-200 bg-white p-7 shadow-sm">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#8d8374]">Profile Completion</p>
-                            <p className="mt-3 text-3xl font-bold text-[#1a1c1e]">{completionPercent}%</p>
+                            <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#8d8374]">Profile Completion</p>
+                                    <p className="mt-3 text-3xl font-bold text-[#1a1c1e]">{completionPercent}%</p>
+                                </div>
+                                {userAge !== null && (
+                                    <div className="text-right">
+                                        <p className="text-[10px] font-bold uppercase tracking-widest text-[#8d8374]">Age</p>
+                                        <p className="mt-1 text-xl font-bold text-[#1a1c1e]">{userAge}</p>
+                                    </div>
+                                )}
+                            </div>
                             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-neutral-100">
                                 <div 
                                     className="h-full bg-gradient-to-r from-[#1a1c1e] to-[#4a3e36] transition-all duration-500" 
@@ -231,11 +268,31 @@ export default function DashboardPage() {
                             <p className="mt-2 text-sm text-[#5c6066]">Permanent and non-expiring. Keep it accessible at all times.</p>
                             <div className="mt-10 flex flex-col items-center gap-8 sm:flex-row sm:items-start">
                                 <div className="h-44 w-44 rounded-3xl bg-[#fbf8f2] p-4 ring-1 ring-neutral-100">
-                                    <div className="h-full w-full bg-[#1a1c1e]" style={{ maskImage: 'url("https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg")', maskSize: 'contain', WebkitMaskImage: 'url("https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg")', WebkitMaskSize: 'contain' }} />
+                                    {qrCode?.qrImageBase64 ? (
+                                        <img 
+                                            src={qrCode.qrImageBase64} 
+                                            alt="QR Code" 
+                                            className="h-full w-full object-contain"
+                                        />
+                                    ) : (
+                                        <div className="h-full w-full bg-[#1a1c1e] animate-pulse" />
+                                    )}
                                 </div>
                                 <div className="flex flex-col gap-3">
-                                    <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-6 py-3 text-sm font-semibold text-[#1a1c1e] transition-colors hover:bg-neutral-50"><Download className="h-4 w-4" /> Download</button>
-                                    <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-6 py-3 text-sm font-semibold text-[#1a1c1e] transition-colors hover:bg-neutral-50"><Printer className="h-4 w-4" /> Print</button>
+                                    <button 
+                                        onClick={downloadQrCode}
+                                        disabled={!qrCode?.qrImageBase64}
+                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-6 py-3 text-sm font-semibold text-[#1a1c1e] transition-colors hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <Download className="h-4 w-4" /> Download
+                                    </button>
+                                    <button 
+                                        onClick={printQrCode}
+                                        disabled={!qrCode?.qrImageBase64}
+                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-6 py-3 text-sm font-semibold text-[#1a1c1e] transition-colors hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <Printer className="h-4 w-4" /> Print
+                                    </button>
                                 </div>
                             </div>
                         </div>

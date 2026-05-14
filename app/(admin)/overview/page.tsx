@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from 'react';
-import { Activity, ShieldAlert, Loader2 } from 'lucide-react';
+import { Activity, ShieldAlert, Loader2, RefreshCw } from 'lucide-react';
 import LunasLoader from '@/components/ui/loader';
 
 // ---------------------------------------------------------------------------
@@ -57,7 +57,10 @@ export default function OverviewPage() {
   const fetchOverview = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/admin/overview');
+      const res = await fetch('/api/admin/overview', {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error ?? `Request failed (${res.status})`);
@@ -104,13 +107,25 @@ export default function OverviewPage() {
       <div className="mx-auto w-full max-w-6xl">
 
         {/* Page Header */}
-        <header className="mb-8">
-          <h1 className="font-serif text-[2.6rem] font-bold tracking-tight text-[#0D152B]">
-            System overview
-          </h1>
-          <p className="mt-2 font-sans text-base text-[#6B7FA3]">
-            Live signals across the Lunas platform.
-          </p>
+        <header className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="font-serif text-[2.6rem] font-bold tracking-tight text-[#0D152B]">
+              System overview
+            </h1>
+            <p className="mt-2 font-sans text-base text-[#6B7FA3]">
+              Live signals across the Lunas platform.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => fetchOverview()}
+            disabled={loading}
+            className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-[#0D152B] transition-colors hover:bg-neutral-50 disabled:opacity-50"
+            title="Refresh data"
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
         </header>
 
         {/* Loading */}
@@ -143,17 +158,17 @@ export default function OverviewPage() {
             {/* ── Dashboard Grid ───────────────────────────────────────── */}
             <div className="mt-8 grid gap-6 lg:grid-cols-5">
 
-              {/* Pending Verifications — left, taller card */}
+              {/* Recent Access Activity — left, taller card */}
               <article className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-8 lg:col-span-3">
                 <div className="mb-6 flex items-center gap-2.5">
                   <ShieldAlert className="h-5 w-5 text-[#C9A84C]" />
                   <h2 className="font-sans text-lg font-bold text-[#0D152B]">
-                    Pending verifications
+                    Recent QR scans
                   </h2>
                 </div>
 
                 {data.recentActivity.length === 0 ? (
-                  <p className="font-sans text-sm text-[#94a3b8]">No pending verifications.</p>
+                  <p className="font-sans text-sm text-[#94a3b8]">No recent access logs.</p>
                 ) : (
                   <ul className="divide-y divide-neutral-100">
                     {data.recentActivity.slice(0, 5).map((entry) => (
@@ -170,13 +185,10 @@ export default function OverviewPage() {
                           </p>
                         </div>
 
-                        {/* Sleek Review button */}
-                        <button
-                          type="button"
-                          className="shrink-0 rounded-full border border-[#D4C4A8] bg-white px-5 py-1.5 font-sans text-xs font-semibold text-[#0D152B] transition-colors hover:bg-[#F2EDE6]"
-                        >
-                          Review
-                        </button>
+                        {/* Status badge */}
+                        <span className="shrink-0 inline-block rounded-full bg-green-100 px-3 py-1 font-sans text-xs font-semibold text-green-700">
+                          {entry.status}
+                        </span>
                       </li>
                     ))}
                   </ul>

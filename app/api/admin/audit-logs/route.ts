@@ -28,7 +28,7 @@ export async function GET(req: Request): Promise<Response> {
 
     const where = eventType ? { eventType } : {};
 
-    const [logs, total] = await Promise.all([
+    const [rawLogs, total] = await Promise.all([
       prisma.adminAuditLog.findMany({
         where,
         orderBy: { createdAt: 'desc' },
@@ -37,6 +37,24 @@ export async function GET(req: Request): Promise<Response> {
       }),
       prisma.adminAuditLog.count({ where }),
     ]);
+
+    // Map database fields to expected format and parse metadata safely
+    const logs = rawLogs.map((log) => ({
+      id: log.id,
+      eventType: log.eventType,
+      actorId: log.actorIdHash,
+      targetId: log.targetIdHash,
+      metadata: log.metadata ? (() => {
+        try {
+          return JSON.parse(log.metadata);
+        } catch {
+          // If metadata is malformed, return null to prevent frontend parsing errors
+          console.error(`[audit] Malformed metadata for log ${log.id}:`, log.metadata);
+          return null;
+        }
+      })() : null,
+      createdAt: log.createdAt,
+    }));
 
     return Response.json({
       logs,

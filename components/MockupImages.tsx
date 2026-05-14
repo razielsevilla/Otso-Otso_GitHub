@@ -92,6 +92,7 @@ export function MockupImages() {
                   src="/images/mockup-images (2).png"
                   alt="Lunas app showing vital details"
                   fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
@@ -100,6 +101,7 @@ export function MockupImages() {
                   src="/images/mockup-images (3).png"
                   alt="Lunas QR Code scanning interface"
                   fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
@@ -111,6 +113,7 @@ export function MockupImages() {
                 src="/images/mockup-images (1).png"
                 alt="Lunas platform overview"
                 fill
+                sizes="(max-width: 768px) 100vw, 34vw"
                 className="object-cover"
                 priority
               />
@@ -162,6 +165,7 @@ export function MockupImages() {
                   src="/images/mockup-images (4).png"
                   alt="Lunas dashboard showing allergies"
                   fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
@@ -170,6 +174,7 @@ export function MockupImages() {
                   src="/images/mockup-images (5).png"
                   alt="Lunas emergency profile"
                   fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
