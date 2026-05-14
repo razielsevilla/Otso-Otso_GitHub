@@ -10,11 +10,10 @@ if (typeof window !== "undefined") {
 }
 
 const images = [
-  "/images/mockup-images (6).png",
-  "/images/mockup-images (7).png",
-  "/images/mockup-images (8).png",
-  "/images/mockup-images (9).png",
-  "/images/mockup-images (10).png"
+  "/images/mockup-images_2ndRow (1).png",
+  "/images/mockup-images_2ndRow (2).png",
+  "/images/mockup-images_2ndRow (3).png",
+  "/images/mockup-images_2ndRow (4).png"
 ];
 
 export function HorizontalGallery() {

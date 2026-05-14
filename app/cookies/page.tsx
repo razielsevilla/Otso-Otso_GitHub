@@ -290,20 +290,14 @@ export default function CookiePolicyPage() {
                     </Link>
                   </li>
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
+                    <Link href="/partnerships" className="transition-colors hover:text-golden">
                       Partnerships
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
-                      Careers
-                    </a>
+                    <Link href="/careers" className="transition-colors hover:text-golden">Careers</Link>
                   </li>
-                  <li>
-                    <a href="#" className="transition-colors hover:text-golden">
-                      Press Kit
-                    </a>
-                  </li>
+
                 </ul>
               </div>
             </div>

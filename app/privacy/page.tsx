@@ -259,7 +259,7 @@ export default function PrivacyPage() {
                 </h4>
                 <ul className="space-y-3 text-sm">
                   <li>
-                    <Link href="/privacy" className="transition-colors hover:text-golden">
+                    <Link href="/privacy" className="transition-colors hover:text-golden text-golden font-medium">
                       Privacy Policy
                     </Link>
                   </li>
@@ -293,20 +293,14 @@ export default function PrivacyPage() {
                     </Link>
                   </li>
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
+                    <Link href="/partnerships" className="transition-colors hover:text-golden">
                       Partnerships
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
-                      Careers
-                    </a>
+                    <Link href="/careers" className="transition-colors hover:text-golden">Careers</Link>
                   </li>
-                  <li>
-                    <a href="#" className="transition-colors hover:text-golden">
-                      Press Kit
-                    </a>
-                  </li>
+
                 </ul>
               </div>
             </div>

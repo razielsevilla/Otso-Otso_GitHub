@@ -213,9 +213,10 @@ export default function ContactPage() {
           <div className="h-px bg-gradient-to-r from-transparent via-golden/20 to-transparent" />
         </div>
 
-        {/* Main footer grid */}
+        {/* ── Main footer grid ── */}
         <div className="mx-auto max-w-6xl px-6 pt-16 pb-12">
           <div className="grid gap-8 md:grid-cols-[0.7fr_1.3fr]">
+            {/* Brand column */}
             <div className="space-y-5">
               <Logo variant="light" />
               <p className="max-w-xs text-sm leading-relaxed text-muted-foreground/70">
@@ -228,49 +229,148 @@ export default function ContactPage() {
               </div>
             </div>
 
+            {/* Nav columns */}
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+              {/* Product */}
               <div>
-                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">Product</h4>
+                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">
+                  Product
+                </h4>
                 <ul className="space-y-3 text-sm">
-                  <li><Link href="/#features" className="hover:text-golden">Features</Link></li>
-                  <li><Link href="/#why" className="hover:text-golden">Why Lunas</Link></li>
-                  <li><Link href="/#how" className="hover:text-golden">How it works</Link></li>
-                  <li><Link href="/#trust" className="hover:text-golden">Security</Link></li>
+                  <li>
+                    <a href="/#features" className="transition-colors hover:text-golden">
+                      Features
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/#why" className="transition-colors hover:text-golden">
+                      Why Lunas
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/#how" className="transition-colors hover:text-golden">
+                      How it works
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/#trust" className="transition-colors hover:text-golden">
+                      Security
+                    </a>
+                  </li>
+                  <li>
+                    <Link href="/scan/demo-mp-2026-00428" className="transition-colors hover:text-golden">
+                      Demo scan
+                    </Link>
+                  </li>
                 </ul>
               </div>
+
+              {/* Resources */}
               <div>
-                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">Resources</h4>
+                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">
+                  Resources
+                </h4>
                 <ul className="space-y-3 text-sm">
-                  <li><a href="#" className="hover:text-golden">Documentation</a></li>
-                  <li><a href="#" className="hover:text-golden">API Reference</a></li>
-                  <li><a href="#" className="hover:text-golden">Help Center</a></li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Documentation
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      API Reference
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Help Center
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="transition-colors hover:text-golden">
+                      Status
+                    </a>
+                  </li>
                 </ul>
               </div>
+
+              {/* Legal */}
               <div>
-                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">Legal</h4>
+                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">
+                  Legal
+                </h4>
                 <ul className="space-y-3 text-sm">
-                  <li><Link href="/privacy" className="hover:text-golden">Privacy Policy</Link></li>
-                  <li><Link href="/terms" className="hover:text-golden">Terms of Service</Link></li>
-                  <li><Link href="/data-processing" className="hover:text-golden">Data Processing</Link></li>
+                  <li>
+                    <Link href="/privacy" className="transition-colors hover:text-golden">
+                      Privacy Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/terms" className="transition-colors hover:text-golden">
+                      Terms of Service
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/data-processing" className="transition-colors hover:text-golden">
+                      Data Processing
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/cookies" className="transition-colors hover:text-golden">
+                      Cookie Policy
+                    </Link>
+                  </li>
                 </ul>
               </div>
+
+              {/* Connect */}
               <div>
-                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">Connect</h4>
+                <h4 className="mb-4 font-display text-sm font-semibold tracking-wide text-night">
+                  Connect
+                </h4>
                 <ul className="space-y-3 text-sm">
-                  <li><Link href="/contact" className="hover:text-golden text-golden">Contact Us</Link></li>
-                  <li><a href="#" className="hover:text-golden">Partnerships</a></li>
-                  <li><a href="#" className="hover:text-golden">Careers</a></li>
+                  <li>
+                    <Link href="/contact" className="transition-colors hover:text-golden text-golden font-medium">
+                      Contact Us
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/partnerships" className="transition-colors hover:text-golden">
+                      Partnerships
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/careers" className="transition-colors hover:text-golden">Careers</Link>
+                  </li>
+
                 </ul>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
+
+
+        {/* ── Bottom bar ── */}
         <div className="border-t border-border/50">
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row">
             <div className="text-xs text-muted-foreground/50">
-              © {new Date().getFullYear()} Lunas · Team Otso-Otso · A SIKAPTala Ideathon project
+              © {new Date().getFullYear()} Lunas · Team Otso-Otso · A SIKAPTala
+              Ideathon project
+            </div>
+            <div className="flex items-center gap-6 text-xs text-muted-foreground/50">
+              <Link href="/privacy" className="transition-colors hover:text-golden">
+                Privacy
+              </Link>
+              <Link href="/terms" className="transition-colors hover:text-golden">
+                Terms
+              </Link>
+              <Link href="/data-processing" className="transition-colors hover:text-golden">
+                Data Processing
+              </Link>
+              <Link href="/cookies" className="transition-colors hover:text-golden">
+                Cookies
+              </Link>
             </div>
           </div>
         </div>
