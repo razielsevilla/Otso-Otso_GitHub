@@ -1,48 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+/**
+ * Documentation — Lunas
+ * Redesigned to match the Premium Aesthetic.
+ */
+
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import {
   ArrowLeft,
-  MapPin,
-  Briefcase,
-  Users,
-  Code,
-  HeartPulse,
-  ChevronRight
+  BookOpen,
+  Terminal,
+  Shield,
+  MapPin
 } from "lucide-react";
 
-export default function CareersPage() {
-  const openRoles = [
+export default function DocsPage() {
+  const sections = [
     {
-      title: "Senior Frontend Engineer",
-      department: "Engineering",
-      location: "Remote (Philippines)",
-      type: "Full-time",
-      icon: Code,
+      icon: BookOpen,
+      title: "User Guide",
+      description: "Learn how to set up your medical passport, add your medical history, and manage your emergency contacts effectively.",
     },
     {
-      title: "Product Designer",
-      department: "Design",
-      location: "Remote (Philippines)",
-      type: "Full-time",
-      icon: Briefcase,
+      icon: Terminal,
+      title: "API Reference",
+      description: "For healthcare providers and developers looking to integrate Lunas into their existing systems and applications.",
     },
     {
-      title: "Healthcare Integration Specialist",
-      department: "Operations",
-      location: "Manila, Philippines",
-      type: "Full-time",
-      icon: HeartPulse,
+      icon: Shield,
+      title: "Security Protocols",
+      description: "Deep dive into our encryption standards, data sovereignty principles, and how we keep your information private.",
     },
-    {
-      title: "Community Manager",
-      department: "Marketing",
-      location: "Remote",
-      type: "Part-time",
-      icon: Users,
-    }
   ];
 
   return (
@@ -70,66 +59,108 @@ export default function CareersPage() {
         </Link>
       </header>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN HERO SECTION */}
       <main className="relative z-10 mx-auto max-w-6xl px-6 pb-48 pt-12">
-        <div className="mx-auto max-w-3xl text-center mb-20">
-          <h1 className="font-display text-5xl font-bold leading-[1.1] tracking-tighter text-night md:text-6xl lg:text-7xl">
-            Join the <br />
-            <span className="text-golden italic">mission.</span>
-          </h1>
-          <p className="mt-8 text-lg leading-relaxed text-muted-foreground/80 text-balance mx-auto">
-            Help us build the future of secure, accessible medical passports.
-            We&apos;re looking for passionate individuals who care deeply about privacy, design, and saving lives.
-          </p>
-        </div>
+        <div className="grid gap-16 lg:grid-cols-[1fr_1.2fr]">
 
-        {/* Roles List */}
-        <div className="mx-auto max-w-4xl space-y-4">
-          <div className="mb-8 flex items-center justify-between border-b border-night/5 pb-4">
-            <h2 className="font-display text-2xl font-bold text-night">Open Roles</h2>
-            <span className="text-sm font-medium text-golden bg-golden/10 px-3 py-1 rounded-full">{openRoles.length} Positions</span>
-          </div>
+          {/* Left Column - High Impact Title */}
+          <div className="space-y-8">
+            <div>
+              <h1 className="font-display text-5xl font-bold leading-[1.1] tracking-tighter text-night md:text-6xl lg:text-7xl">
+                Technical <br />
+                <span className="text-golden italic">Resources.</span>
+              </h1>
+              <p className="mt-8 max-w-md text-lg leading-relaxed text-muted-foreground/80">
+                Everything you need to know about using, integrating, and trusting Lunas.
+                Our documentation is designed for both users and professionals.
+              </p>
+            </div>
 
-          {openRoles.map((role, idx) => (
-            <div key={idx} className="group relative flex flex-col md:flex-row md:items-center justify-between gap-6 rounded-2xl border border-golden/10 bg-white/40 p-6 backdrop-blur-sm transition-all duration-500 hover:border-golden/30 hover:bg-white hover:shadow-soft-xl cursor-pointer">
-              <div className="flex items-start gap-5">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-golden/[0.05] text-golden/60 transition-colors group-hover:bg-golden/10 group-hover:text-golden">
-                  <role.icon size={24} strokeWidth={1.2} />
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-semibold text-night group-hover:text-golden transition-colors">
-                    {role.title}
-                  </h3>
-                  <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-muted-foreground/70">
-                    <span className="flex items-center gap-1.5"><Briefcase size={14} /> {role.department}</span>
-                    <span className="hidden md:inline">•</span>
-                    <span className="flex items-center gap-1.5"><MapPin size={14} /> {role.location}</span>
-                    <span className="hidden md:inline">•</span>
-                    <span>{role.type}</span>
+            {/* Quick Pillars */}
+            <div className="space-y-6">
+              {sections.map((s, idx) => (
+                <div key={idx} className="group relative flex items-start gap-5 rounded-2xl border border-golden/10 bg-white/40 p-6 backdrop-blur-sm transition-all duration-500 hover:border-golden/30 hover:bg-white hover:shadow-soft-xl">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-golden/[0.05] text-golden/60 transition-colors group-hover:bg-golden/10 group-hover:text-golden">
+                    <s.icon size={24} strokeWidth={1.2} />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-night">
+                      {s.title}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground/70">
+                      {s.description}
+                    </p>
                   </div>
                 </div>
-              </div>
-              <div className="md:ml-auto pl-[4.25rem] md:pl-0 flex items-center">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-night/5 text-night transition-transform group-hover:bg-golden group-hover:text-night group-hover:scale-110">
-                  <ChevronRight size={18} />
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
-
-          <div className="mt-12 rounded-2xl bg-golden/5 border border-golden/10 p-8 text-center">
-            <h3 className="font-display text-xl font-semibold text-night mb-2">Don&apos;t see a perfect fit?</h3>
-            <p className="text-muted-foreground/80 mb-6 max-w-md mx-auto text-sm">
-              We&apos;re always looking for talented people. Send your resume and a brief intro to our team.
-            </p>
-            <a href="mailto:careers@lunas.app" className="inline-flex rounded-full bg-night px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-night/90 hover:shadow-glow-sm">
-              Email us
-            </a>
           </div>
+
+          {/* Right Column - Content */}
+          <div className="rounded-[2.5rem] border border-night/[0.03] bg-white/60 p-8 shadow-soft-2xl backdrop-blur-md md:p-12 lg:p-16">
+            <div className="max-w-none space-y-12 text-muted-foreground/90">
+              <div className="space-y-2 border-b border-night/5 pb-8">
+                <h2 className="font-display text-3xl font-bold text-night">Overview</h2>
+                <p className="text-sm font-medium uppercase tracking-widest text-golden/60">Documentation · Version 1.0</p>
+              </div>
+
+              <section className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-night/5" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-night/20">01</span>
+                </div>
+                <h3 className="text-xl font-bold text-night">Getting Started</h3>
+                <p className="leading-relaxed text-sm lg:text-base">
+                  To begin using Lunas, create an account and fill in your vital medical information. Once complete, a unique QR code is generated for you. This code can be printed on physical cards, worn as jewelry, or saved on your phone's lock screen.
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-night/5" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-night/20">02</span>
+                </div>
+                <h3 className="text-xl font-bold text-night">In an Emergency</h3>
+                <p className="leading-relaxed text-sm lg:text-base">
+                  When a first responder scans your QR code, they are immediately presented with your critical medical data: allergies, blood type, current medications, and emergency contacts. No app is required for the responder; it works via any standard mobile browser.
+                </p>
+                <div className="rounded-xl border border-golden/20 bg-golden/[0.03] p-4 text-sm italic text-golden/80">
+                  "Speed is the most critical factor in emergency care. Lunas reduces information gathering time from minutes to seconds."
+                </div>
+              </section>
+
+              <section className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-night/5" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-night/20">03</span>
+                </div>
+                <h3 className="text-xl font-bold text-night">Data Management</h3>
+                <p className="leading-relaxed text-sm lg:text-base">
+                  You can update your medical profile at any time. We recommend reviewing your information every six months or after any major medical change. All updates are instantly reflected across your QR code ecosystem.
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-night/5" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-night/20">04</span>
+                </div>
+                <h3 className="text-xl font-bold text-night">Support</h3>
+                <p className="leading-relaxed text-sm lg:text-base">
+                  Need help with your account or have technical questions? Our support team is available 24/7.
+                  <br />
+                  <a href="mailto:support@lunas.health" className="mt-2 inline-block font-semibold text-golden hover:underline decoration-golden/30 underline-offset-4">
+                    support@lunas.health
+                  </a>
+                </p>
+              </section>
+
+            </div>
+          </div>
+
         </div>
       </main>
 
-      {/* FOOTER */}
       <footer className="relative bg-ivory text-muted-foreground overflow-hidden">
         {/* Decorative glow orbs */}
         <div className="pointer-events-none absolute -top-40 left-1/4 h-80 w-80 rounded-full bg-golden/[0.04] blur-[100px]" />
@@ -194,7 +225,7 @@ export default function CareersPage() {
                 </h4>
                 <ul className="space-y-3 text-sm">
                   <li>
-                    <Link href="/docs" className="transition-colors hover:text-golden">
+                    <Link href="/docs" className="transition-colors hover:text-golden text-golden font-medium">
                       Documentation
                     </Link>
                   </li>
@@ -257,7 +288,7 @@ export default function CareersPage() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/careers" className="transition-colors hover:text-golden text-golden font-medium">Careers</Link>
+                    <Link href="/careers" className="transition-colors hover:text-golden">Careers</Link>
                   </li>
 
                 </ul>
@@ -265,8 +296,6 @@ export default function CareersPage() {
             </div>
           </div>
         </div>
-
-
 
         {/* ── Bottom bar ── */}
         <div className="border-t border-border/50">

@@ -212,11 +212,6 @@ export default function CookiePolicyPage() {
                       Security
                     </a>
                   </li>
-                  <li>
-                    <Link href="/scan/demo-mp-2026-00428" className="transition-colors hover:text-golden">
-                      Demo scan
-                    </Link>
-                  </li>
                 </ul>
               </div>
 
@@ -227,24 +222,19 @@ export default function CookiePolicyPage() {
                 </h4>
                 <ul className="space-y-3 text-sm">
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
+                    <Link href="/docs" className="transition-colors hover:text-golden">
                       Documentation
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
-                      API Reference
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="transition-colors hover:text-golden">
+                    <Link href="/help-center" className="transition-colors hover:text-golden">
                       Help Center
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#" className="transition-colors hover:text-golden">
-                      Status
-                    </a>
+                    <Link href="/security" className="transition-colors hover:text-golden">
+                      Security & Trust
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -308,8 +298,7 @@ export default function CookiePolicyPage() {
         <div className="border-t border-border/50">
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row">
             <div className="text-xs text-muted-foreground/50">
-              © {new Date().getFullYear()} Lunas · Team Otso-Otso · A SIKAPTala
-              Ideathon project
+              © {new Date().getFullYear()} Lunas
             </div>
             <div className="flex items-center gap-6 text-xs text-muted-foreground/50">
               <Link href="/privacy" className="transition-colors hover:text-golden">
